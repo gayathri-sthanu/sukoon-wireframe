@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Sukoon — Wireframes</title>
+<style>
+  /* ===== RESET & BASE ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #4A6CF7;
+    --blue-light: #EEF2FF;
+    --blue-mid: #C7D4FE;
+    --blue-dark: #3B5BDB;
+    --blue-glow: rgba(74, 108, 247, 0.12);
+    --gray-50: #F8F9FA;
+    --gray-100: #F1F3F5;
+    --gray-200: #E9ECEF;
+    --gray-300: #DEE2E6;
+    --gray-400: #CED4DA;
+    --gray-500: #ADB5BD;
+    --gray-600: #868E96;
+    --gray-700: #495057;
+    --gray-800: #343A40;
+    --gray-900: #212529;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #F0F2F5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 24px 0 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== PHONE FRAME ===== */
+  .phone-frame {
+    width: 390px;
+    min-height: 700px;
+    background: #FFFFFF;
+    position: relative;
+    overflow: hidden;
+    border-radius: 44px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.08);
+    border: 8px solid #1a1a1a;
+  }
+  .phone-frame::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+    height: 28px;
+    background: #1a1a1a;
+    border-radius: 0 0 20px 20px;
+    z-index: 100;
+  }
+  .phone-frame::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 134px;
+    height: 5px;
+    background: #333;
+    border-radius: 3px;
+    z-index: 100;
+  }
+
+  /* ===== SCREENS ===== */
+  .screen {
+    display: none;
+    width: 100%;
+    min-height: 700px;
+    padding: 56px 24px 40px;
+    position: relative;
+    overflow-y: auto;
+    background: #FFFFFF;
+  }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* ===== TYPOGRAPHY ===== */
+  .heading { font-size: 24px; font-weight: 700; color: var(--gray-900); line-height: 1.3; letter-spacing: -0.3px; }
+  .subheading { font-size: 15px; font-weight: 400; color: var(--gray-600); line-height: 1.5; margin-top: 8px; }
+  .micro { font-size: 12px; color: var(--gray-500); line-height: 1.5; }
+  .section-label { font-size: 11px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+
+  /* ===== NAVIGATION ===== */
+  .nav-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+  .back-btn {
+    width: 36px; height: 36px; border: none; background: var(--gray-100);
+    border-radius: 10px; cursor: pointer; display: flex; align-items: center;
+    justify-content: center; transition: all 0.15s;
+  }
+  .back-btn:hover { background: var(--blue-light); }
+  .back-btn::after {
+    content: ''; width: 10px; height: 10px;
+    border-left: 2px solid var(--gray-700); border-bottom: 2px solid var(--gray-700);
+    transform: rotate(45deg); margin-left: 3px;
+  }
+  .progress-indicator { font-size: 12px; color: var(--blue); font-weight: 600; }
+
+  /* ===== PROGRESS DOTS ===== */
+  .progress-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 32px; }
+  .progress-dots .dot { width: 32px; height: 4px; border-radius: 2px; background: var(--gray-200); transition: background 0.3s; }
+  .progress-dots .dot.active { background: var(--blue); }
+
+  /* ===== BUTTONS ===== */
+  .btn-primary {
+    width: 100%; height: 52px; border: none; border-radius: 14px;
+    background: var(--blue); color: #FFFFFF; font-size: 16px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s; letter-spacing: 0.2px; margin-top: auto;
+  }
+  .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); box-shadow: 0 4px 12px var(--blue-glow); }
+  .btn-primary:disabled { background: var(--gray-300); color: var(--gray-500); cursor: not-allowed; transform: none; box-shadow: none; }
+  .btn-secondary {
+    width: 100%; height: 52px; border: 1.5px solid var(--blue-mid); border-radius: 14px;
+    background: var(--blue-light); color: var(--blue); font-size: 16px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: var(--blue-mid); border-color: var(--blue); }
+
+  .btn-row { display: flex; gap: 12px; margin-top: auto; }
+  .btn-row .btn-primary, .btn-row .btn-secondary { flex: 1; margin-top: 0; }
+
+  .text-link {
+    display: block; text-align: center; font-size: 13px; color: var(--blue);
+    margin-top: 16px; cursor: pointer; text-decoration: none; transition: color 0.15s; font-weight: 500;
+  }
+  .text-link:hover { color: var(--blue-dark); text-decoration: underline; }
+
+  /* ===== INPUT FIELDS ===== */
+  .field-group { margin-bottom: 20px; }
+  .field-label { font-size: 14px; font-weight: 500; color: var(--gray-700); margin-bottom: 8px; display: block; }
+  .field-input {
+    width: 100%; height: 52px; border: 1.5px solid var(--gray-300); border-radius: 12px;
+    padding: 0 16px; font-size: 15px; color: var(--gray-900); background: var(--gray-50);
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .field-input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-glow); background: #FFF; }
+  .field-input::placeholder { color: var(--gray-400); }
+  .field-input.prefilled { background: var(--gray-100); color: var(--gray-600); border-color: var(--gray-200); }
+
+  select.field-input {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%234A6CF7' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px;
+  }
+
+  /* ===== SELECTABLE CARDS ===== */
+  .card-select {
+    width: 100%; border: 1.5px solid var(--gray-200); border-radius: 14px;
+    padding: 20px; margin-bottom: 12px; cursor: pointer; background: var(--gray-50);
+    transition: all 0.2s; text-align: left;
+  }
+  .card-select:hover { border-color: var(--blue-mid); background: var(--blue-light); }
+  .card-select.selected { border-color: var(--blue); background: var(--blue-light); box-shadow: 0 0 0 1px var(--blue), 0 2px 8px var(--blue-glow); }
+  .card-select .card-title { font-size: 16px; font-weight: 600; color: var(--gray-900); margin-bottom: 4px; }
+  .card-select.selected .card-title { color: var(--blue-dark); }
+  .card-select .card-sub { font-size: 13px; color: var(--gray-600); line-height: 1.4; }
+
+  /* ===== INSIGHT CARDS ===== */
+  .insight-card {
+    display: flex; align-items: flex-start; gap: 14px; padding: 18px;
+    border: 1px solid var(--gray-200); border-radius: 14px; margin-bottom: 10px; background: var(--gray-50);
+  }
+  .insight-icon {
+    width: 36px; height: 36px; border-radius: 10px; background: var(--blue-light);
+    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; color: var(--blue);
+  }
+  .insight-icon.check { background: var(--blue-light); }
+  .insight-icon.check::after { content: '\2713'; color: var(--blue); font-weight: 700; }
+  .insight-icon.person { background: var(--blue-light); border-radius: 50%; }
+  .insight-icon.person::after { content: ''; width: 12px; height: 12px; background: var(--blue-mid); border-radius: 50%; }
+  .insight-content .insight-label { font-size: 11px; font-weight: 600; color: var(--blue); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+  .insight-content .insight-body { font-size: 14px; color: var(--gray-700); line-height: 1.5; }
+
+  /* ===== OPTION CARDS (Screen 9) ===== */
+  .option-card {
+    border: 1.5px solid var(--gray-200); border-radius: 14px; padding: 20px;
+    margin-bottom: 12px; background: var(--gray-50); transition: all 0.2s;
+  }
+  .option-card:hover { border-color: var(--blue-mid); background: var(--blue-light); }
+  .option-tag {
+    display: inline-block; font-size: 11px; font-weight: 600; color: var(--blue);
+    background: var(--blue-light); padding: 4px 10px; border-radius: 6px;
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;
+  }
+  .option-body { font-size: 15px; color: var(--gray-800); margin-bottom: 6px; line-height: 1.5; }
+  .option-emotion { font-size: 12px; color: var(--gray-500); font-style: italic; margin-bottom: 14px; }
+  .option-cta {
+    font-size: 14px; font-weight: 600; color: var(--blue); cursor: pointer;
+    border: none; background: none; padding: 0; transition: color 0.15s;
+  }
+  .option-cta:hover { color: var(--blue-dark); }
+
+  /* ===== OPTION DETAIL PANEL ===== */
+  .option-detail {
+    display: none; margin-top: 12px; padding: 16px; background: var(--blue-light);
+    border-radius: 12px; border: 1px solid var(--blue-mid);
+  }
+  .option-detail.open { display: block; }
+  .option-detail-title { font-size: 13px; font-weight: 600; color: var(--blue-dark); margin-bottom: 8px; }
+  .option-detail-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0; border-bottom: 1px solid var(--blue-mid); font-size: 13px;
+  }
+  .option-detail-item:last-child { border-bottom: none; }
+  .option-detail-name { color: var(--gray-800); }
+  .option-detail-price { color: var(--blue); font-weight: 600; }
+  .option-detail-savings { font-size: 11px; color: var(--gray-600); margin-top: 8px; text-align: center; }
+
+  /* ===== VERDICT BADGE ===== */
+  .verdict-zone { text-align: center; padding: 28px 0; margin-bottom: 24px; }
+  .verdict-badge { display: inline-block; padding: 10px 28px; border-radius: 50px; font-size: 18px; font-weight: 700; letter-spacing: 0.3px; }
+  .verdict-badge.comfortable { background: var(--blue-light); color: var(--blue); }
+  .verdict-badge.manageable { background: #FFF3E0; color: #E67700; }
+  .verdict-badge.not-now { background: #FEE2E2; color: #C92A2A; }
+  .verdict-subtext { font-size: 14px; color: var(--gray-600); margin-top: 10px; }
+
+  /* ===== PEER INSIGHT ===== */
+  .peer-insight {
+    text-align: center; font-size: 13px; color: var(--gray-500); padding: 16px 0;
+    border-top: 1px solid var(--gray-100); margin: 16px 0 24px; font-style: italic;
+  }
+
+  /* ===== CONFIRMATION ===== */
+  .confirm-check {
+    width: 80px; height: 80px; border-radius: 50%; background: var(--blue-light);
+    margin: 40px auto 24px; display: flex; align-items: center; justify-content: center;
+  }
+  .confirm-check::after { content: '\2713'; font-size: 32px; color: var(--blue); font-weight: 700; }
+
+  .decision-log { background: var(--blue-light); border-radius: 12px; padding: 16px 20px; margin: 24px 0; text-align: center; }
+  .decision-log .log-label { font-size: 11px; font-weight: 600; color: var(--blue); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+  .decision-log .log-body { font-size: 14px; color: var(--gray-700); }
+
+  /* ===== SUMMARY CARD ===== */
+  .summary-card { background: var(--gray-50); border-radius: 14px; padding: 20px; margin: 20px 0; border: 1px solid var(--gray-200); }
+  .summary-card .summary-label { font-size: 11px; font-weight: 600; color: var(--blue); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; }
+  .summary-line { font-size: 14px; color: var(--gray-700); padding: 6px 0; border-bottom: 1px solid var(--gray-200); line-height: 1.5; }
+  .summary-line:last-child { border-bottom: none; }
+
+  /* ===== TIME SLOTS ===== */
+  .time-slots { display: flex; gap: 10px; margin: 16px 0; flex-wrap: wrap; }
+  .time-slot {
+    flex: 1; min-width: 100px; padding: 14px 10px; border: 1.5px solid var(--gray-200);
+    border-radius: 12px; background: var(--gray-50); text-align: center; cursor: pointer;
+    font-size: 13px; font-weight: 500; color: var(--gray-700); transition: all 0.2s;
+  }
+  .time-slot:hover { border-color: var(--blue-mid); background: var(--blue-light); }
+  .time-slot.selected { border-color: var(--blue); background: var(--blue-light); box-shadow: 0 0 0 1px var(--blue); color: var(--blue-dark); font-weight: 600; }
+
+  /* ===== STAT DISPLAY ===== */
+  .stat-display { text-align: center; padding: 24px 0; }
+  .stat-number { font-size: 48px; font-weight: 700; color: var(--blue); letter-spacing: -1px; }
+  .stat-label { font-size: 14px; color: var(--gray-600); margin-top: 4px; }
+  .dot-track { display: flex; gap: 8px; justify-content: center; margin: 16px 0 24px; }
+  .dot-track .track-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--gray-200); }
+  .dot-track .track-dot.filled { background: var(--blue); }
+
+  .decision-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--gray-100); }
+  .decision-row:last-child { border-bottom: none; }
+  .decision-row .decision-name { font-size: 14px; color: var(--gray-700); }
+  .decision-row .decision-status { font-size: 12px; color: var(--blue); font-weight: 600; }
+
+  /* ===== REALITY MODAL ===== */
+  .reality-modal { background: var(--blue-light); border-radius: 16px; padding: 24px; margin: 20px 0; border: 1px solid var(--blue-mid); }
+  .reality-modal .modal-heading { font-size: 18px; font-weight: 600; color: var(--gray-800); margin-bottom: 10px; }
+  .reality-modal .modal-body { font-size: 14px; color: var(--gray-600); line-height: 1.6; margin-bottom: 20px; }
+  .modal-btn-row { display: flex; gap: 10px; }
+  .modal-btn {
+    flex: 1; height: 44px; border-radius: 10px; border: 1.5px solid var(--gray-300);
+    background: #FFF; font-size: 14px; font-weight: 500; color: var(--gray-700);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .modal-btn:hover { background: var(--gray-100); }
+  .modal-btn.selected { border-color: var(--blue); background: #FFF; box-shadow: 0 0 0 1px var(--blue); color: var(--blue); font-weight: 600; }
+
+  /* ===== ANNOTATIONS ===== */
+  .annotation {
+    margin-top: 12px; padding: 12px 14px; background: #FFFCE8;
+    border-left: 3px solid #E0D880; border-radius: 0 8px 8px 0;
+    font-size: 11px; color: #998C30; line-height: 1.5;
+  }
+  .annotation strong { color: #7A7020; }
+
+  .reassurance { font-size: 12px; color: var(--gray-500); text-align: center; margin: 16px 0; }
+  .spacer-sm { height: 12px; }
+  .spacer-md { height: 20px; }
+  .spacer-lg { height: 32px; }
+
+  .screen-number {
+    position: absolute; top: 36px; right: 24px; font-size: 10px;
+    font-weight: 700; color: var(--gray-300); letter-spacing: 0.5px; z-index: 10;
+  }
+
+  /* ===== COLLAPSIBLE ===== */
+  .collapsible-toggle { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 12px 0; }
+  .collapsible-toggle .toggle-icon {
+    width: 20px; height: 20px; border-radius: 50%; background: var(--blue-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: var(--blue); font-weight: 600; transition: transform 0.2s;
+  }
+  .collapsible-content { display: none; padding-bottom: 12px; }
+  .collapsible-content.open { display: block; }
+
+  /* ===== EDIT ICON ===== */
+  .edit-icon {
+    position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+    width: 24px; height: 24px; background: var(--blue-light); border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: var(--blue); cursor: pointer;
+  }
+  .field-with-edit { position: relative; }
+  .field-with-edit .field-input { padding-right: 48px; }
+
+  /* ===== SPLASH ===== */
+  .splash-content {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; text-align: center; padding-bottom: 40px;
+  }
+  .app-name { font-size: 44px; font-weight: 800; color: var(--blue); letter-spacing: -1.5px; margin-bottom: 12px; }
+  .tagline { font-size: 16px; color: var(--gray-600); font-weight: 400; line-height: 1.5; }
+
+  /* ===== TRANSITION ===== */
+  .screen { animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ===== SCREEN NAVIGATOR ===== */
+  .screen-nav { width: 390px; margin-top: 20px; padding: 16px 0 24px; }
+  .screen-nav-label { font-size: 11px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 12px; text-align: center; }
+  .nav-section { margin-bottom: 12px; }
+  .nav-section-title { font-size: 10px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; padding-left: 4px; }
+  .nav-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+  .nav-pill {
+    padding: 8px 12px; border-radius: 10px; border: 1.5px solid var(--gray-200);
+    background: #FFF; font-size: 12px; font-weight: 500; color: var(--gray-600);
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  }
+  .nav-pill:hover { border-color: var(--blue-mid); background: var(--blue-light); color: var(--blue); }
+  .nav-pill.active { border-color: var(--blue); background: var(--blue); color: #FFF; font-weight: 600; box-shadow: 0 2px 8px var(--blue-glow); }
+
+  .prev-next-nav { display: flex; gap: 10px; justify-content: center; margin-bottom: 16px; width: 390px; margin-top: 16px; }
+  .pn-btn {
+    flex: 1; max-width: 180px; height: 44px; border: 1.5px solid var(--gray-200);
+    border-radius: 12px; background: #FFF; font-size: 14px; font-weight: 600;
+    color: var(--gray-700); cursor: pointer; transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .pn-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
+  .pn-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .pn-btn:disabled:hover { border-color: var(--gray-200); color: var(--gray-700); background: #FFF; }
+
+  /* ===== EXPERT FLOATING BUTTON ===== */
+  .expert-fab {
+    position: absolute; bottom: 24px; right: 20px; width: 48px; height: 48px;
+    border-radius: 50%; background: var(--blue); border: none; cursor: pointer;
+    box-shadow: 0 4px 16px rgba(74, 108, 247, 0.35); z-index: 50;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; color: #FFF; font-size: 18px; font-weight: 700;
+  }
+  .expert-fab:hover { transform: scale(1.08); box-shadow: 0 6px 20px rgba(74, 108, 247, 0.45); }
+  .expert-fab-tooltip {
+    position: absolute; bottom: 80px; right: 20px; background: var(--gray-800);
+    color: #FFF; font-size: 12px; font-weight: 500; padding: 8px 14px;
+    border-radius: 10px; white-space: nowrap; z-index: 50; opacity: 0;
+    pointer-events: none; transition: opacity 0.2s;
+  }
+  .expert-fab:hover + .expert-fab-tooltip { opacity: 1; }
+
+  /* ===== INLINE EXPENSE ROW ===== */
+  .expense-row { display: flex; gap: 10px; margin-bottom: 10px; }
+  .expense-row .field-input:first-child { flex: 1.4; }
+  .expense-row .field-input:last-child { flex: 0.6; }
+
+  /* ===== SPLIT DETAIL TABLE ===== */
+  .split-table { width: 100%; margin-top: 8px; }
+  .split-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--gray-200); font-size: 13px; }
+  .split-row:last-child { border-bottom: none; }
+  .split-label { color: var(--gray-600); }
+  .split-value { color: var(--blue); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="phone-frame" id="phone">
+
+  <!-- ===== S1: SPLASH ===== -->
+  <div class="screen active" id="s1" data-label="Splash">
+    <span class="screen-number">S1</span>
+    <div class="splash-content">
+      <div class="app-name">Sukoon</div>
+      <div class="tagline">Make financial decisions<br>with confidence</div>
+    </div>
+    <button class="btn-primary" onclick="goTo('s2')">Get started</button>
+    <div class="spacer-md"></div>
+    <div class="annotation">
+      <strong>Principle:</strong> Zero-friction entry — no login wall.<br>
+      <strong>Emotion:</strong> Calm authority. The user feels safe before anything is asked.<br>
+      <strong>Logic:</strong> Tapping "Get started" begins first-launch onboarding.
+    </div>
+  </div>
+
+  <!-- ===== S2: CITY + INCOME ===== -->
+  <div class="screen" id="s2" data-label="City + Income">
+    <span class="screen-number">S2</span>
+    <div class="progress-dots"><div class="dot active"></div><div class="dot"></div></div>
+    <div class="heading">Let's understand your world</div>
+    <div class="subheading">This helps us give you guidance that actually fits your life</div>
+    <div class="spacer-lg"></div>
+
+    <div class="field-group">
+      <label class="field-label">Which city do you live in?</label>
+      <select class="field-input" id="city-select">
+        <option value="" disabled selected>Select your city</option>
+        <option>Mumbai</option><option>Delhi</option><option>Bengaluru</option>
+        <option>Hyderabad</option><option>Chennai</option><option>Pune</option>
+        <option>Kolkata</option><option>Other</option>
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">What's your monthly take-home income? (approx)</label>
+      <input class="field-input" type="text" placeholder="e.g. ₹55,000" id="income-input">
+    </div>
+
+    <p class="reassurance">This is only used to guide you — never stored or shared</p>
+    <div class="spacer-lg"></div>
+
+    <button class="btn-primary" onclick="saveIncomeAndContinue()">Continue</button>
+    <div class="spacer-md"></div>
+    <div class="annotation">
+      <strong>Principle:</strong> Ask only what's essential. Two fields max.<br>
+      <strong>Emotion:</strong> Conversational, not bureaucratic. Reassurance reduces anxiety.<br>
+      <strong>Logic:</strong> First launch only. Income pre-fills Screen 6.
+    </div>
+  </div>
+
+  <!-- ===== S3: SPENDING PERSONALITY ===== -->
+  <div class="screen" id="s3" data-label="Personality">
+    <span class="screen-number">S3</span>
+    <div class="progress-dots"><div class="dot active"></div><div class="dot active"></div></div>
+    <div class="heading">How do you usually feel about spending?</div>
+    <div class="subheading">No right answer — just pick what feels true</div>
+    <div class="spacer-lg"></div>
+
+    <div class="card-select" onclick="selectCard(this, 's3')" data-group="s3">
+      <div class="card-title">I overthink every purchase</div>
+      <div class="card-sub">I research, compare, and still feel unsure</div>
+    </div>
+    <div class="card-select" onclick="selectCard(this, 's3')" data-group="s3">
+      <div class="card-title">I buy first, worry later</div>
+      <div class="card-sub">I get excited and sometimes regret it</div>
+    </div>
+    <div class="card-select" onclick="selectCard(this, 's3')" data-group="s3">
+      <div class="card-title">I'm disciplined but always anxious</div>
+      <div class="card-sub">I save and plan but still feel uncertain</div>
+    </div>
+
+    <div class="spacer-lg"></div>
+    <button class="btn-primary" id="s3-cta" disabled onclick="goTo('s4')">This sounds like me &rarr;</button>
+    <div class="spacer-md"></div>
+    <div class="annotation">
+      <strong>Principle:</strong> Personality-based framing — builds empathy.<br>
+      <strong>Emotion:</strong> "We see you." Non-judgmental, warm language.<br>
+      <strong>Logic:</strong> First launch only. Selection shapes Screen 8 personal insight for first-time users.
+    </div>
+  </div>
+
+  <!-- ===== S4: ORIENTATION ===== -->
+  <div class="screen" id="s4" data-label="Orientation">
+    <span class="screen-number">S4</span>
+    <div class="spacer-lg"></div>
+    <div class="heading">Before we begin &mdash;</div>
+    <div class="subheading">What matters most to you right now?</div>
+    <div class="spacer-lg"></div>
+
+    <div class="card-select" onclick="selectCard(this, 's4')" data-group="s4" data-value="peace">
+      <div class="card-title">Peace of mind</div>
+      <div class="card-sub">I want to feel secure and in control</div>
+    </div>
+    <div class="card-select" onclick="selectCard(this, 's4')" data-group="s4" data-value="enjoy">
+      <div class="card-title">Enjoy now</div>
+      <div class="card-sub">I've worked hard — I want to treat myself</div>
+    </div>
+    <div class="card-select" onclick="selectCard(this, 's4')" data-group="s4" data-value="save">
+      <div class="card-title">Save for the future</div>
+      <div class="card-sub">I want to protect what I've built</div>
+    </div>
+
+    <div class="spacer-lg"></div>
+    <button class="btn-primary" id="s4-cta" disabled onclick="goTo('s5')">Show my guidance &rarr;</button>
+    <div class="spacer-md"></div>
+    <div class="annotation">
+      <strong>Principle:</strong> Emotional orientation — surface what matters before calculating.<br>
+      <strong>Emotion:</strong> Fresh start feel. No back button. User sets their own frame.<br>
+      <strong>Logic:</strong> Every session. Selection reshapes tone of output on Screen 8.
+    </div>
+    <!-- Expert FAB available from S4 onward -->
+    <button class="expert-fab" onclick="goTo('s11')" title="Talk to a coach">?</button>
+    <div class="expert-fab-tooltip">Talk to a financial coach</div>
+  </div>
+
+  <!-- ===== S5: DECISION INPUT ===== -->
+  <div class="screen" id="s5" data-label="Decision Input">
+    <span class="screen-number">S5</span>
+    <div class="nav-bar">
+      <button class="back-btn" onclick="goTo('s4')"></button>
+      <span class="progress-indicator">Step 1 of 3</span>
+    </div>
+    <div class="heading">What are you thinking about?</div>
+    <div class="subheading">Tell us what you're considering buying or spending on</div>
+    <div class="spacer-lg"></div>
+
+    <div class="field-group">
+      <label class="field-label">What is it?</label>
+      <input class="field-input" type="text" placeholder="e.g. New phone, Weekend trip, Laptop">
+    </div>
+    <div class="field-group">
+      <label class="field-label">How much does it cost?</label>
+      <input class="field-input" type="text" placeholder="₹ ____">
+      <p class="micro" style="margin-top: 6px;">Rough estimate is fine</p>
+    </div>
+
+    <div class="spacer-lg"></div>
+    <button class="btn-primary" onclick="goTo('s6')">Continue</button>
+    <div class="spacer-md"></div>
+    <div class="annotation">
+      <strong>Principle:</strong> Keep it simple — only two inputs. Don't overwhelm.<br>
+      <strong>Emotion:</strong> Casual tone. "Rough estimate" removes pressure for precision.<br>
+      <strong>Logic:</strong> Step 1 of 3 in decision flow. Data feeds into Screen 8 calculations.
+    </div>
+    <button class="expert-fab" onclick="goTo('s11')" title="Talk to a coach">?</button>
+    <div class="expert-fab-tooltip">Talk to a financial coach</div>
+  </div>
+
+  <!-- ===== S6: FINANCIAL SNAPSHOT ===== -->
+  <div class="screen" id="s6" data-label="Snapshot">
+    <span class="screen-number">S6</span>
+    <div class="nav-bar">
+      <button class="back-btn" onclick="goTo('s5')"></button>
+      <span class="progress-indicator">Step 2 of 3</span>
+    </div>
+    <div class="heading">Your monthly picture</div>
+    <div class="subheading">We'll use this to check how this fits in</div>
+    <div class="spacer-lg"></div>
+
+    <div class="field-group">
+      <label class="field-label">Monthly take-home income</label>
+      <div class="field-with-edit">
+        <input class="field-input prefilled" type="text" id="s6-income" value="" readonly>
+        <div class="edit-icon" onclick="enableIncomeEdit()">&#9998;</div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Fixed monthly expenses</label>
+      <input class="field-input" type="text" placeholder="Rent, bills, groceries — roughly">
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Any EMIs or loan payments?</label>
+      <input class="field-input" type="text" placeholder="₹0 if none">
+    </div>
+
+    <div class="collapsible-toggle" onclick="toggleCollapsible(this)">
+      <div class="toggle-icon">+</div>
+      <span class="field-label" style="margin-bottom: 0;">Any big expenses coming up? (optional)</span>
+    </div>
+    <div class="collapsible-content">
+      <div class="expense-row">
+        <input class="field-input" type="text" placeholder="e.g. Travel, medical, family event">
+        <input class="field-input" type="text" placeholder="₹ Amount">
+      </div>
+      <div class="expense-row">
+        <input class="field-input" type="text" placeholder="Another expense (optional)">
+        <input class="field-input" type="text" placeholder="₹ Amount">
+      </div>
+    </div>
+
+    <p class="reassurance">Your info never leaves this app</p>
+    <div class="spacer-lg"></div>
+
+    <button class="btn-primary" onclick="goTo('s7')">Show my guidance</button>
+    <div class="spacer-md"></div>
+    <div class="annotation">
+      <strong>Principle:</strong> Progressive disclosure — fields appear as previous is filled.<br>
+      <strong>Emotion:</strong> Income pre-filled from onboarding. Expense amounts help judge financial impact.<br>
+      <strong>Logic:</strong> Step 2 of 3. Income auto-filled from S2. Big expenses now have description + amount.
+    </div>
+    <button class="expert-fab" onclick="goTo('s11')" title="Talk to a coach">?</button>
+    <div class="expert-fab-tooltip">Talk to a financial coach</div>
+  </div>
+
+  <!-- ===== S7: REALITY CORRECTION ===== -->
+  <div class="screen" id="s7" data-label="Reality Check">
+    <span class="screen-number">S7</span>
+    <div class="nav-bar">
+      <button class="back-btn" onclick="goTo('s6')"></button>
+      <span class="progress-indicator">Step 3 of 3</span>
+    </div>
+    <div class="heading">Almost there...</div>
+    <div class="subheading">Before your guidance, a quick check</div>
+    <div class="spacer-lg"></div>
+
+    <div class="reality-modal">
+      <div class="modal-heading">Just checking &mdash;</div>
+      <div class="modal-body">
+        Last time you mentioned an upcoming travel expense.<br>
+        Is that still on your radar this month?
+      </div>
+      <div class="modal-btn-row">
+        <button class="modal-btn" onclick="selectModalBtn(this)">Yes, include it</button>
+        <button class="modal-btn" onclick="selectModalBtn(this)">No, skip it</button>
+      </div>
+    </div>
+
+    <div class="spacer-lg"></div>
+    <button class="btn-primary" onclick="goTo('s8')">Continue</button>
+    <div class="spacer-md"></div>
+    <div class="annotation">
+      <strong>Principle:</strong> Decision memory — context-aware follow-up.<br>
+      <strong>Emotion:</strong> "We remember you." Builds trust through continuity.<br>
+      <strong>Logic:</strong> Only shown to returning users when memory flags past context. First-time users skip to S8.
+    </div>
+  </div>
+
+  <!-- ===== S8: GUIDANCE OUTPUT ===== -->
+  <div class="screen" id="s8" data-label="Guidance">
+    <span class="screen-number">S8</span>
+    <div class="nav-bar">
+      <button class="back-btn" onclick="goTo('s7')"></button>
+      <span class="progress-indicator"></span>
+    </div>
+
+    <div class="verdict-zone">
+      <div class="verdict-badge comfortable">Comfortable</div>
+      <div class="verdict-subtext">This looks like a good fit for you right now</div>
+    </div>
+
+    <div class="annotation" style="margin-top: 0; margin-bottom: 20px;">
+      <strong>Other verdict states:</strong><br>
+      &bull; <strong>Manageable:</strong> "Manageable with adjustment" — "You can make this work with a small change"<br>
+      &bull; <strong>Not right now:</strong> "Not right now" — "This would stretch your finances this month"
+    </div>
+
+    <div class="insight-card">
+      <div class="insight-icon check"></div>
+      <div class="insight-content">
+        <div class="insight-label">Affordability</div>
+        <div class="insight-body">You'll still have ₹30,000 left this month</div>
+      </div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-icon check"></div>
+      <div class="insight-content">
+        <div class="insight-label">Future outlook</div>
+        <div class="insight-body">Next month stays stable with your planned expenses</div>
+      </div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-icon person"></div>
+      <div class="insight-content">
+        <div class="insight-label">For you specifically</div>
+        <div class="insight-body">Last time you felt this uncertain, you waited — and felt relieved</div>
+      </div>
+    </div>
+
+    <div class="annotation" style="margin-top: 4px; margin-bottom: 0;">
+      <strong>Note:</strong> "For you specifically" pulled from decision memory. First-time users see personality insight instead.
+    </div>
+
+    <div class="peer-insight">
+      "72% of people in Bengaluru on a similar income felt confident here"
+    </div>
+
+    <div class="annotation" style="margin-top: -8px; margin-bottom: 20px;">
+      <strong>Note:</strong> City + income calibrated from onboarding data.
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="goTo('s10')">Go ahead</button>
+      <button class="btn-secondary" onclick="goTo('s9')">Explore options</button>
+    </div>
+    <a class="text-link" onclick="goTo('s11')">Still unsure? Talk to an expert</a>
+    <div class="spacer-md"></div>
+    <div class="annotation">
+      <strong>Principle:</strong> Give a clear verdict, then support with evidence. Don't overwhelm.<br>
+      <strong>Emotion:</strong> Confidence-building. Verdict first, details second.<br>
+      <strong>Logic:</strong> Verdict tone adapts to Screen 4 orientation. Three exit paths: Go ahead, Explore, Expert.
+    </div>
+  </div>
+
+  <!-- ===== S9: SMARTER OPTIONS ===== -->
+  <div class="screen" id="s9" data-label="Options">
+    <span class="screen-number">S9</span>
+    <div class="nav-bar">
+      <button class="back-btn" onclick="goTo('s8')"></button>
+      <span class="progress-indicator"></span>
+    </div>
+    <div class="heading">Here are better ways to make this work</div>
+    <div class="spacer-lg"></div>
+
+    <!-- LOWER COST OPTION -->
+    <div class="option-card">
+      <div class="option-tag">Lower cost option</div>
+      <div class="option-body">Choose a ₹20,000 option to stay within a safer range</div>
+      <div class="option-emotion">Same outcome, less pressure</div>
+      <button class="option-cta" onclick="toggleOptionDetail('detail-lower')">Show me options &rarr;</button>
+      <div class="option-detail" id="detail-lower">
+        <div class="option-detail-title">Alternative options in your range</div>
+        <div class="option-detail-item">
+          <span class="option-detail-name">Samsung Galaxy A55</span>
+          <span class="option-detail-price">₹18,999</span>
+        </div>
+        <div class="option-detail-item">
+          <span class="option-detail-name">OnePlus Nord CE 4</span>
+          <span class="option-detail-price">₹19,999</span>
+        </div>
+        <div class="option-detail-item">
+          <span class="option-detail-name">Pixel 7a</span>
+          <span class="option-detail-price">₹20,499</span>
+        </div>
+        <div class="option-detail-savings">You'd save ₹10,000–12,000 compared to your original pick</div>
+      </div>
+    </div>
+
+    <!-- WAIT OPTION -->
+    <div class="option-card">
+      <div class="option-tag">Wait 2 months</div>
+      <div class="option-body">If you save ₹12,000/month, this becomes comfortable</div>
+      <div class="option-emotion">Choosing to wait is a confident decision</div>
+      <button class="option-cta" onclick="toggleOptionDetail('detail-wait')">Set a reminder &rarr;</button>
+      <div class="option-detail" id="detail-wait">
+        <div class="option-detail-title">Your savings plan</div>
+        <div class="split-table">
+          <div class="split-row">
+            <span class="split-label">Target amount</span>
+            <span class="split-value">₹30,000</span>
+          </div>
+          <div class="split-row">
+            <span class="split-label">Monthly savings needed</span>
+            <span class="split-value">₹12,000/mo</span>
+          </div>
+          <div class="split-row">
+            <span class="split-label">Comfortable by</span>
+            <span class="split-value">June 2026</span>
+          </div>
+          <div class="split-row">
+            <span class="split-label">Remaining surplus after saving</span>
+            <span class="split-value">₹18,000/mo</span>
+          </div>
+        </div>
+        <div class="option-detail-savings">We'll remind you in 2 months when you're ready</div>
+      </div>
+    </div>
+
+    <!-- SPLIT PAYMENT -->
+    <div class="option-card">
+      <div class="option-tag">Split across months</div>
+      <div class="option-body">Break into 3 payments of ₹10,000 to reduce pressure</div>
+      <div class="option-emotion">Smaller steps, same destination</div>
+      <button class="option-cta" onclick="toggleOptionDetail('detail-split')">See how &rarr;</button>
+      <div class="option-detail" id="detail-split">
+        <div class="option-detail-title">Payment breakdown</div>
+        <div class="split-table">
+          <div class="split-row">
+            <span class="split-label">Month 1 (April)</span>
+            <span class="split-value">₹10,000</span>
+          </div>
+          <div class="split-row">
+            <span class="split-label">Month 2 (May)</span>
+            <span class="split-value">₹10,000</span>
+          </div>
+          <div class="split-row">
+            <span class="split-label">Month 3 (June)</span>
+            <span class="split-value">₹10,000</span>
+          </div>
+          <div class="split-row">
+            <span class="split-label">Total</span>
+            <span class="split-value">₹30,000</span>
+          </div>
+        </div>
+        <div class="option-detail-savings">Your monthly surplus stays above ₹20,000 throughout</div>
+      </div>
+    </div>
+
+    <div class="spacer-md"></div>
+    <a class="text-link" onclick="goTo('s8')">Go back and reconsider</a>
+    <div class="spacer-md"></div>
+    <div class="annotation">
+      <strong>Principle:</strong> Don't just say no — offer actionable alternatives with real detail.<br>
+      <strong>Emotion:</strong> Each option has emotional framing that validates the decision to adjust.<br>
+      <strong>Logic:</strong> Shown when user taps "Explore options" OR verdict is Manageable/Not right now. Expandable details give real numbers.
+    </div>
+  </div>
+
+  <!-- ===== S10: CONFIRMATION ===== -->
+  <div class="screen" id="s10" data-label="Confirmed">
+    <span class="screen-number">S10</span>
+    <div class="spacer-lg"></div>
+
+    <div class="confirm-check"></div>
+    <div class="heading" style="text-align: center;">You're staying in control</div>
+    <div class="subheading" style="text-align: center;">Decision saved. We'll check in with you in 48 hours.</div>
+
+    <div class="annotation" style="margin-top: 16px;">
+      <strong>Orientation variants:</strong><br>
+      &bull; Peace of mind: "You're staying in control"<br>
+      &bull; Enjoy now: "You've earned this"<br>
+      &bull; Save for future: "This fits your plan"
+    </div>
+
+    <div class="decision-log">
+      <div class="log-label">Decision logged</div>
+      <div class="log-body">New phone — ₹15,000 — Comfortable</div>
+    </div>
+
+    <div class="spacer-lg"></div>
+    <button class="btn-primary" onclick="goTo('s12')">Done</button>
+    <div class="spacer-md"></div>
+    <div class="annotation">
+      <strong>Principle:</strong> Celebrate the decision. Closure reduces second-guessing.<br>
+      <strong>Emotion:</strong> Warm affirmation tied to their stated priority. No back button = finality.<br>
+      <strong>Logic:</strong> No back arrow — closure screen. Heading adapts to Screen 4 orientation choice.
+    </div>
+  </div>
+
+  <!-- ===== S11: EXPERT HANDOFF ===== -->
+  <div class="screen" id="s11" data-label="Expert">
+    <span class="screen-number">S11</span>
+    <div class="nav-bar">
+      <button class="back-btn" onclick="goBack()"></button>
+      <span class="progress-indicator"></span>
+    </div>
+    <div class="heading">Talk to a financial coach</div>
+    <div class="subheading">They'll already know your situation before the call</div>
+
+    <div class="summary-card">
+      <div class="summary-label">What they'll see</div>
+      <div class="summary-line">Decision: New phone, ₹15,000</div>
+      <div class="summary-line">Your surplus: ₹25,000 this month</div>
+      <div class="summary-line">Your pattern: Usually feels good after planned purchases</div>
+    </div>
+
+    <label class="field-label">Pick a time — 15 minutes</label>
+    <div class="time-slots">
+      <div class="time-slot" onclick="selectTimeSlot(this)">Today 6pm</div>
+      <div class="time-slot" onclick="selectTimeSlot(this)">Tomorrow 10am</div>
+      <div class="time-slot" onclick="selectTimeSlot(this)">Tomorrow 4pm</div>
+    </div>
+
+    <p class="reassurance">Free for your first session</p>
+    <div class="spacer-lg"></div>
+
+    <button class="btn-primary" id="s11-cta" disabled>Confirm slot</button>
+    <div class="spacer-md"></div>
+    <div class="annotation">
+      <strong>Principle:</strong> Warm handoff — context is pre-loaded so the user doesn't repeat themselves.<br>
+      <strong>Emotion:</strong> "They already know you" removes anxiety about explaining.<br>
+      <strong>Logic:</strong> Accessible via floating "?" button on S4–S9, or "Talk to an expert" link on S8. Back button returns to the screen you came from.
+    </div>
+  </div>
+
+  <!-- ===== S12: 48HR CHECK-IN ===== -->
+  <div class="screen" id="s12" data-label="Check-in">
+    <span class="screen-number">S12</span>
+    <div class="spacer-lg"></div>
+    <div class="heading">Quick check &mdash;</div>
+    <div class="subheading">You went ahead with the new phone. How do you feel about it?</div>
+    <div class="spacer-lg"></div>
+
+    <div class="card-select" onclick="selectCard(this, 's12')" data-group="s12">
+      <div class="card-title">Feels right</div>
+      <div class="card-sub">Glad I did it</div>
+    </div>
+    <div class="card-select" onclick="selectCard(this, 's12')" data-group="s12">
+      <div class="card-title">Still unsure</div>
+      <div class="card-sub">Not sure yet — need more time to tell</div>
+    </div>
+
+    <p class="micro" style="text-align: center; margin-top: 16px;">This helps us guide you better next time</p>
+    <div class="spacer-lg"></div>
+
+    <button class="btn-primary" id="s12-cta" disabled onclick="goTo('s13')">Save my answer</button>
+    <div class="spacer-md"></div>
+    <div class="annotation">
+      <strong>Principle:</strong> Close the feedback loop. Reflection improves future guidance.<br>
+      <strong>Emotion:</strong> Non-judgmental check-in. Both answers are valid — no negative framing.<br>
+      <strong>Logic:</strong> Push notification reopens app here 48 hours post-decision. No back arrow.
+    </div>
+  </div>
+
+  <!-- ===== S13: DECISION PATTERN CARD ===== -->
+  <div class="screen" id="s13" data-label="Track Record">
+    <span class="screen-number">S13</span>
+    <div class="spacer-md"></div>
+    <div class="heading">Your decision track record</div>
+    <div class="subheading">Based on your last 5 decisions</div>
+
+    <div class="stat-display">
+      <div class="stat-number">4 out of 5</div>
+      <div class="stat-label">decisions felt right in hindsight</div>
+    </div>
+
+    <div class="dot-track">
+      <div class="track-dot filled"></div>
+      <div class="track-dot filled"></div>
+      <div class="track-dot filled"></div>
+      <div class="track-dot filled"></div>
+      <div class="track-dot"></div>
+    </div>
+
+    <div class="section-label">Recent decisions</div>
+    <div class="decision-row">
+      <span class="decision-name">New phone ₹15,000</span>
+      <span class="decision-status">Felt right</span>
+    </div>
+    <div class="decision-row">
+      <span class="decision-name">Weekend trip ₹8,000</span>
+      <span class="decision-status">Felt right</span>
+    </div>
+    <div class="decision-row">
+      <span class="decision-name">Laptop ₹45,000</span>
+      <span class="decision-status">Chose to wait</span>
+    </div>
+
+    <div class="spacer-md"></div>
+    <p class="micro" style="text-align: center; padding: 16px 0; border-top: 1px solid var(--gray-100);">
+      You tend to feel better about planned purchases than impulse ones
+    </p>
+
+    <div class="spacer-lg"></div>
+    <button class="btn-primary" onclick="goTo('s4')">Make a new decision</button>
+    <div class="spacer-md"></div>
+    <div class="annotation">
+      <strong>Principle:</strong> Pattern recognition builds self-awareness over time.<br>
+      <strong>Emotion:</strong> Positive framing — "4 out of 5 felt right" builds confidence.<br>
+      <strong>Logic:</strong> Shown after check-in. Also accessible from home. "Make a new decision" loops to S4.
+    </div>
+  </div>
+
+</div><!-- /phone-frame -->
+
+<!-- ===== PREV / NEXT NAVIGATION ===== -->
+<div class="prev-next-nav">
+  <button class="pn-btn" id="prev-btn" onclick="navigatePrev()">&larr; Previous</button>
+  <button class="pn-btn" id="next-btn" onclick="navigateNext()">Next &rarr;</button>
+</div>
+
+<!-- ===== SCREEN NAVIGATOR ===== -->
+<div class="screen-nav">
+  <div class="screen-nav-label">Jump to Screen</div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">A — Onboarding</div>
+    <div class="nav-pills">
+      <div class="nav-pill active" onclick="goTo('s1')">S1 Splash</div>
+      <div class="nav-pill" onclick="goTo('s2')">S2 City + Income</div>
+      <div class="nav-pill" onclick="goTo('s3')">S3 Personality</div>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">B — Decision Flow</div>
+    <div class="nav-pills">
+      <div class="nav-pill" onclick="goTo('s4')">S4 Orientation</div>
+      <div class="nav-pill" onclick="goTo('s5')">S5 Decision Input</div>
+      <div class="nav-pill" onclick="goTo('s6')">S6 Snapshot</div>
+      <div class="nav-pill" onclick="goTo('s7')">S7 Reality Check</div>
+      <div class="nav-pill" onclick="goTo('s8')">S8 Guidance</div>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">C — Branching Paths</div>
+    <div class="nav-pills">
+      <div class="nav-pill" onclick="goTo('s9')">S9 Options</div>
+      <div class="nav-pill" onclick="goTo('s10')">S10 Confirmed</div>
+      <div class="nav-pill" onclick="goTo('s11')">S11 Expert</div>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">D — Post-Decision</div>
+    <div class="nav-pills">
+      <div class="nav-pill" onclick="goTo('s12')">S12 Check-in</div>
+      <div class="nav-pill" onclick="goTo('s13')">S13 Track Record</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const screenOrder = ['s1','s2','s3','s4','s5','s6','s7','s8','s9','s10','s11','s12','s13'];
+  let currentScreen = 's1';
+  let previousScreen = 's1'; // Track where user came from for S11 back button
+
+  // ===== NAVIGATION =====
+  function goTo(screenId) {
+    previousScreen = currentScreen;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById(screenId);
+    if (target) {
+      target.classList.add('active');
+      target.scrollTop = 0;
+      currentScreen = screenId;
+      updateNav();
+
+      // Pre-fill S6 income when navigating there
+      if (screenId === 's6') {
+        const s6Income = document.getElementById('s6-income');
+        const incomeVal = document.getElementById('income-input').value;
+        if (incomeVal && s6Income) {
+          s6Income.value = incomeVal.startsWith('₹') ? incomeVal : '₹' + incomeVal;
+        } else if (s6Income && !s6Income.value) {
+          s6Income.value = 'Not entered yet';
+        }
+      }
+
+      document.getElementById('phone').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  // S11 back button goes to wherever the user came from
+  function goBack() {
+    goTo(previousScreen);
+  }
+
+  // Save income from S2 and continue
+  function saveIncomeAndContinue() {
+    goTo('s3');
+  }
+
+  // Enable editing the income field on S6
+  function enableIncomeEdit() {
+    const field = document.getElementById('s6-income');
+    field.readOnly = false;
+    field.classList.remove('prefilled');
+    field.focus();
+  }
+
+  function updateNav() {
+    document.querySelectorAll('.nav-pill').forEach(p => p.classList.remove('active'));
+    const idx = screenOrder.indexOf(currentScreen);
+    document.querySelectorAll('.nav-pill')[idx]?.classList.add('active');
+    document.getElementById('prev-btn').disabled = idx === 0;
+    document.getElementById('next-btn').disabled = idx === screenOrder.length - 1;
+  }
+
+  function navigatePrev() {
+    const idx = screenOrder.indexOf(currentScreen);
+    if (idx > 0) goTo(screenOrder[idx - 1]);
+  }
+
+  function navigateNext() {
+    const idx = screenOrder.indexOf(currentScreen);
+    if (idx < screenOrder.length - 1) goTo(screenOrder[idx + 1]);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+    if (e.key === 'ArrowLeft') navigatePrev();
+    if (e.key === 'ArrowRight') navigateNext();
+  });
+
+  // ===== CARD SELECTION =====
+  function selectCard(el, group) {
+    document.querySelectorAll(`.card-select[data-group="${group}"]`).forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    const cta = document.getElementById(`${group}-cta`);
+    if (cta) cta.disabled = false;
+  }
+
+  // ===== MODAL BUTTON =====
+  function selectModalBtn(el) {
+    el.parentElement.querySelectorAll('.modal-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  // ===== TIME SLOTS =====
+  function selectTimeSlot(el) {
+    document.querySelectorAll('.time-slot').forEach(t => t.classList.remove('selected'));
+    el.classList.add('selected');
+    const cta = document.getElementById('s11-cta');
+    if (cta) cta.disabled = false;
+  }
+
+  // ===== COLLAPSIBLE =====
+  function toggleCollapsible(el) {
+    const content = el.nextElementSibling;
+    const icon = el.querySelector('.toggle-icon');
+    if (content.classList.contains('open')) {
+      content.classList.remove('open');
+      icon.textContent = '+';
+    } else {
+      content.classList.add('open');
+      icon.textContent = '\u2212';
+    }
+  }
+
+  // ===== OPTION DETAIL TOGGLE (S9) =====
+  function toggleOptionDetail(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('open');
+  }
+
+  updateNav();
+</script>
+
+</body>
+</html>
