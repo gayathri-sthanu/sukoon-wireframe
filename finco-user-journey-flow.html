@@ -553,6 +553,22 @@
     letter-spacing: 0.5px;
   }
 
+  /* Field type tags */
+  .field-tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    background: rgba(129,199,132,0.12);
+    border: 1px solid rgba(129,199,132,0.25);
+    color: #2E7D32;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+
   /* Horizontal flow arrows between branch items */
   .h-arrow {
     display: flex;
@@ -590,10 +606,16 @@
         <div class="node-desc">"What are you planning?" — User enters purchase details and selects their emotional priority.</div>
         <div class="node-details">
           <div class="detail-item mint-bg">
-            <span class="detail-icon">🛒</span> Item, category & estimated cost
+            <span class="detail-icon">🛒</span> "What are you buying?" — <span class="field-tag">Text Input</span>
           </div>
           <div class="detail-item mint-bg">
-            <span class="detail-icon">💚</span> Priority selection: Comfort · Flexibility · Long-term
+            <span class="detail-icon">📂</span> "Category" — <span class="field-tag">Dropdown</span>
+          </div>
+          <div class="detail-item mint-bg">
+            <span class="detail-icon">💵</span> "Estimated cost" — <span class="field-tag">Text Input</span>
+          </div>
+          <div class="detail-item mint-bg" style="border: 1px solid rgba(129,199,132,0.25);">
+            <span class="detail-icon">💚</span> Priority cards: Comfort · Flexibility · Long-term
           </div>
           <div class="detail-item mint-bg">
             <span class="detail-icon">👆</span> User taps "Continue"
@@ -617,13 +639,19 @@
         <div class="node-icon sky">📊</div>
         <div class="node-screen-label">Screen 2</div>
         <div class="node-title">Financial Situation</div>
-        <div class="node-desc">"Your monthly situation" — Collects income, expenses, and EMIs to calculate affordability.</div>
+        <div class="node-desc">"Your monthly situation" — Collects income, expenses, and EMIs to calculate affordability. Data stays private and secure.</div>
         <div class="node-details">
           <div class="detail-item sky-bg">
-            <span class="detail-icon">💰</span> Monthly income input
+            <span class="detail-icon">💰</span> "Income" — <span class="field-tag">Text Input</span>
           </div>
           <div class="detail-item sky-bg">
-            <span class="detail-icon">💳</span> Expenses & EMIs/Rent
+            <span class="detail-icon">💳</span> "Expenses" — <span class="field-tag">Text Input</span>
+          </div>
+          <div class="detail-item sky-bg">
+            <span class="detail-icon">🏠</span> "EMIs/Rent" — <span class="field-tag">Text Input</span>
+          </div>
+          <div class="detail-item sky-bg" style="font-size: 12px; font-style: italic; opacity: 0.8;">
+            <span class="detail-icon">🔒</span> "Your data stays private and secure"
           </div>
           <div class="detail-item sky-bg">
             <span class="detail-icon">🔍</span> "Show My Guidance" button
@@ -750,24 +778,27 @@
         </div>
       </div>
 
-      <!-- Branch C: Expert Support -->
+      <!-- Branch C: Expert Support — Schedule a Session -->
       <div class="node glow-lavender" style="animation-delay:0.6s; flex: 1;">
         <div class="node-number lavender">5</div>
         <div class="node-accent lavender"></div>
-        <div class="node-icon lavender">💬</div>
+        <div class="node-icon lavender">📅</div>
         <div class="node-screen-label">Screen 5</div>
         <div class="branch-label expert">? Unsure</div>
-        <div class="node-title">Expert Support</div>
-        <div class="node-desc">"Talk to an expert" — chat-based guidance from a financial coach.</div>
+        <div class="node-title">Schedule Expert Session</div>
+        <div class="node-desc">"Talk to an expert" — book a session with a Financial Guide / Money Coach.</div>
         <div class="node-details">
           <div class="detail-item lavender-bg">
-            <span class="detail-icon">👨‍💼</span> Chat with Money Coach
+            <span class="detail-icon">👤</span> Expert card with avatar & description
           </div>
           <div class="detail-item lavender-bg">
-            <span class="detail-icon">💭</span> Personalized Q&A
+            <span class="detail-icon">🕕</span> Time slots — <span class="field-tag" style="background: var(--lavender-light); border-color: rgba(149,117,205,0.3);">Selectable Chips</span>
           </div>
           <div class="detail-item lavender-bg">
-            <span class="detail-icon">🤝</span> "Guidance, not judgment"
+            <span class="detail-icon">📝</span> Optional note — <span class="field-tag" style="background: var(--lavender-light); border-color: rgba(149,117,205,0.3);">Text Input</span>
+          </div>
+          <div class="detail-item lavender-bg">
+            <span class="detail-icon">🔘</span> "Book session" CTA
           </div>
         </div>
       </div>
