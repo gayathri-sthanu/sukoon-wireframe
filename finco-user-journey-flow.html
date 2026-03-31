@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinCo — User Journey Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --mint: #C8E6C9;
+    --mint-deep: #81C784;
+    --mint-light: #E8F5E9;
+    --peach: #FFCCBC;
+    --peach-deep: #FF8A65;
+    --peach-light: #FBE9E7;
+    --lavender: #D1C4E9;
+    --lavender-deep: #9575CD;
+    --lavender-light: #EDE7F6;
+    --sky: #B3E5FC;
+    --sky-deep: #4FC3F7;
+    --sky-light: #E1F5FE;
+    --sand: #F5E6D3;
+    --sand-deep: #D7B98E;
+    --sand-light: #FFF8F0;
+    --rose: #F8BBD0;
+    --rose-deep: #F06292;
+    --rose-light: #FCE4EC;
+    --cream: #FFFDE7;
+    --charcoal: #37474F;
+    --charcoal-light: #546E7A;
+    --bg: #FAFBF9;
+    --card-shadow: 0 2px 20px rgba(0,0,0,0.04), 0 1px 4px rgba(0,0,0,0.03);
+    --card-shadow-hover: 0 8px 40px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--charcoal);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Subtle background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse at 10% 20%, rgba(200,230,201,0.25) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(179,229,252,0.2) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(209,196,233,0.1) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 40px 100px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 70px;
+    animation: fadeDown 0.8s ease-out;
+  }
+
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border: 1px solid rgba(129,199,132,0.3);
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--charcoal-light);
+    margin-bottom: 24px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .header-badge span {
+    width: 6px; height: 6px;
+    background: var(--mint-deep);
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 48px;
+    font-weight: 600;
+    color: var(--charcoal);
+    line-height: 1.2;
+    margin-bottom: 12px;
+    letter-spacing: -1px;
+  }
+
+  .header p {
+    font-size: 17px;
+    color: var(--charcoal-light);
+    font-weight: 300;
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Flow Container */
+  .flow-container {
+    position: relative;
+  }
+
+  /* SVG Connector Lines */
+  .flow-connectors {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Flow Nodes */
+  .flow-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .flow-row.branching {
+    gap: 60px;
+  }
+
+  .connector-vertical {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .connector-line {
+    width: 2px;
+    height: 50px;
+    background: linear-gradient(to bottom, var(--mint-deep), var(--mint));
+    border-radius: 2px;
+    position: relative;
+  }
+
+  .connector-line::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid var(--mint);
+  }
+
+  .connector-line.sky { background: linear-gradient(to bottom, var(--sky-deep), var(--sky)); }
+  .connector-line.sky::after { border-top-color: var(--sky); }
+
+  .connector-line.lavender { background: linear-gradient(to bottom, var(--lavender-deep), var(--lavender)); }
+  .connector-line.lavender::after { border-top-color: var(--lavender); }
+
+  .connector-line.peach { background: linear-gradient(to bottom, var(--peach-deep), var(--peach)); }
+  .connector-line.peach::after { border-top-color: var(--peach); }
+
+  .connector-line.rose { background: linear-gradient(to bottom, var(--rose-deep), var(--rose)); }
+  .connector-line.rose::after { border-top-color: var(--rose); }
+
+  .connector-line.sand { background: linear-gradient(to bottom, var(--sand-deep), var(--sand)); }
+  .connector-line.sand::after { border-top-color: var(--sand); }
+
+  /* Branch connectors */
+  .branch-connector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .branch-svg {
+    width: 700px;
+    height: 60px;
+  }
+
+  .merge-svg {
+    width: 700px;
+    height: 60px;
+  }
+
+  /* Node Card */
+  .node {
+    background: white;
+    border-radius: 20px;
+    padding: 28px 32px;
+    box-shadow: var(--card-shadow);
+    position: relative;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+    min-width: 320px;
+    max-width: 420px;
+    width: 100%;
+  }
+
+  .node:hover {
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-3px);
+  }
+
+  .node-number {
+    position: absolute;
+    top: -12px;
+    left: 24px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    z-index: 2;
+  }
+
+  .node-number.mint { background: var(--mint-deep); }
+  .node-number.sky { background: var(--sky-deep); }
+  .node-number.lavender { background: var(--lavender-deep); }
+  .node-number.peach { background: var(--peach-deep); }
+  .node-number.rose { background: var(--rose-deep); }
+  .node-number.sand { background: var(--sand-deep); }
+
+  .node-accent {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .node-accent.mint { background: linear-gradient(90deg, var(--mint-deep), var(--mint)); }
+  .node-accent.sky { background: linear-gradient(90deg, var(--sky-deep), var(--sky)); }
+  .node-accent.lavender { background: linear-gradient(90deg, var(--lavender-deep), var(--lavender)); }
+  .node-accent.peach { background: linear-gradient(90deg, var(--peach-deep), var(--peach)); }
+  .node-accent.rose { background: linear-gradient(90deg, var(--rose-deep), var(--rose)); }
+  .node-accent.sand { background: linear-gradient(90deg, var(--sand-deep), var(--sand)); }
+
+  .node-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+
+  .node-icon.mint { background: var(--mint-light); }
+  .node-icon.sky { background: var(--sky-light); }
+  .node-icon.lavender { background: var(--lavender-light); }
+  .node-icon.peach { background: var(--peach-light); }
+  .node-icon.rose { background: var(--rose-light); }
+  .node-icon.sand { background: var(--sand-light); }
+
+  .node-screen-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 6px;
+    opacity: 0.5;
+  }
+
+  .node-title {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    line-height: 1.3;
+    color: var(--charcoal);
+  }
+
+  .node-desc {
+    font-size: 14px;
+    color: var(--charcoal-light);
+    line-height: 1.65;
+    margin-bottom: 16px;
+    font-weight: 300;
+  }
+
+  /* Detail items inside nodes */
+  .node-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .detail-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--charcoal);
+    transition: background 0.2s;
+  }
+
+  .detail-item.mint-bg { background: var(--mint-light); }
+  .detail-item.sky-bg { background: var(--sky-light); }
+  .detail-item.lavender-bg { background: var(--lavender-light); }
+  .detail-item.peach-bg { background: var(--peach-light); }
+  .detail-item.rose-bg { background: var(--rose-light); }
+  .detail-item.sand-bg { background: var(--sand-light); }
+
+  .detail-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  /* Decision diamond */
+  .decision-node {
+    background: white;
+    border-radius: 20px;
+    padding: 24px 28px;
+    box-shadow: var(--card-shadow);
+    position: relative;
+    min-width: 280px;
+    max-width: 340px;
+    text-align: center;
+    border: 2px dashed rgba(129,199,132,0.4);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .decision-node:hover {
+    box-shadow: var(--card-shadow-hover);
+    transform: translateY(-3px);
+  }
+
+  .decision-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .decision-title {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--charcoal);
+    margin-bottom: 6px;
+  }
+
+  .decision-desc {
+    font-size: 13px;
+    color: var(--charcoal-light);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  /* Branch labels */
+  .branch-label {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 100px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  .branch-label.yes { background: var(--mint-light); color: #2E7D32; }
+  .branch-label.no { background: var(--peach-light); color: #BF360C; }
+  .branch-label.maybe { background: var(--lavender-light); color: #4527A0; }
+  .branch-label.expert { background: var(--sky-light); color: #01579B; }
+
+  /* Action buttons inside nodes */
+  .node-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  .action-pill {
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    border: none;
+    cursor: default;
+  }
+
+  .action-pill.primary { background: var(--mint-deep); color: white; }
+  .action-pill.secondary { background: var(--sand-light); color: var(--charcoal); border: 1px solid var(--sand); }
+  .action-pill.tertiary { background: transparent; color: var(--sky-deep); text-decoration: underline; }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .flow-row, .connector-vertical, .branch-connector {
+    animation: fadeUp 0.7s ease-out both;
+  }
+
+  .flow-row:nth-child(1) { animation-delay: 0.1s; }
+  .flow-row:nth-child(2) { animation-delay: 0.2s; }
+  .flow-row:nth-child(3) { animation-delay: 0.3s; }
+  .flow-row:nth-child(4) { animation-delay: 0.4s; }
+  .flow-row:nth-child(5) { animation-delay: 0.5s; }
+  .flow-row:nth-child(6) { animation-delay: 0.6s; }
+
+  /* Footer legend */
+  .legend {
+    margin-top: 80px;
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s ease-out 1s both;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--charcoal-light);
+    font-weight: 400;
+  }
+
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+  }
+
+  .legend-dot.mint { background: var(--mint-deep); }
+  .legend-dot.sky { background: var(--sky-deep); }
+  .legend-dot.lavender { background: var(--lavender-deep); }
+  .legend-dot.peach { background: var(--peach-deep); }
+  .legend-dot.rose { background: var(--rose-deep); }
+  .legend-dot.sand { background: var(--sand-deep); }
+
+  /* Dashed border legend */
+  .legend-dashed {
+    width: 24px;
+    height: 12px;
+    border: 2px dashed rgba(129,199,132,0.5);
+    border-radius: 3px;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .flow-row { flex-direction: column; align-items: center; }
+    .flow-row.branching { gap: 20px; }
+    .node { max-width: 90vw; min-width: unset; }
+    .decision-node { max-width: 90vw; min-width: unset; }
+    .header h1 { font-size: 34px; }
+    .page-wrapper { padding: 40px 20px 60px; }
+    .branch-svg, .merge-svg { display: none; }
+  }
+
+  /* Horizontal branch arrows for side nodes */
+  .side-label {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .side-label.left { right: calc(100% + 16px); }
+  .side-label.right { left: calc(100% + 16px); }
+
+  /* Subtle node inner glow on theme */
+  .node.glow-mint { border: 1px solid rgba(129,199,132,0.15); }
+  .node.glow-sky { border: 1px solid rgba(79,195,247,0.15); }
+  .node.glow-lavender { border: 1px solid rgba(149,117,205,0.15); }
+  .node.glow-peach { border: 1px solid rgba(255,138,101,0.15); }
+  .node.glow-rose { border: 1px solid rgba(240,98,146,0.15); }
+  .node.glow-sand { border: 1px solid rgba(215,185,142,0.15); }
+
+  /* Flow path annotation */
+  .path-annotation {
+    text-align: center;
+    font-size: 12px;
+    color: var(--charcoal-light);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    opacity: 0.6;
+    margin: -10px 0 10px;
+  }
+
+  /* Branch container for 3-way split */
+  .branch-three {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 30px;
+  }
+
+  .branch-three .node,
+  .branch-three .decision-node {
+    min-width: 260px;
+    max-width: 320px;
+  }
+
+  /* Connector with label */
+  .labeled-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .connector-label {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Horizontal flow arrows between branch items */
+  .h-arrow {
+    display: flex;
+    align-items: center;
+    color: var(--charcoal-light);
+    opacity: 0.3;
+    font-size: 20px;
+    padding: 0 4px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-badge"><span></span> User Journey Flow</div>
+    <h1>FinCo — Decision Assistant</h1>
+    <p>Complete user journey from purchase intent to reflection & learning</p>
+  </div>
+
+  <div class="flow-container">
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SCREEN 1: Intent & Input -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="flow-row">
+      <div class="node glow-mint" style="animation-delay:0.1s">
+        <div class="node-number mint">1</div>
+        <div class="node-accent mint"></div>
+        <div class="node-icon mint">🎯</div>
+        <div class="node-screen-label">Screen 1</div>
+        <div class="node-title">Intent & Input</div>
+        <div class="node-desc">"What are you planning?" — User enters purchase details and selects their emotional priority.</div>
+        <div class="node-details">
+          <div class="detail-item mint-bg">
+            <span class="detail-icon">🛒</span> Item, category & estimated cost
+          </div>
+          <div class="detail-item mint-bg">
+            <span class="detail-icon">💚</span> Priority selection: Comfort · Flexibility · Long-term
+          </div>
+          <div class="detail-item mint-bg">
+            <span class="detail-icon">👆</span> User taps "Continue"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connector -->
+    <div class="connector-vertical">
+      <div class="connector-line"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SCREEN 2: Financial Situation -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="flow-row">
+      <div class="node glow-sky" style="animation-delay:0.2s">
+        <div class="node-number sky">2</div>
+        <div class="node-accent sky"></div>
+        <div class="node-icon sky">📊</div>
+        <div class="node-screen-label">Screen 2</div>
+        <div class="node-title">Financial Situation</div>
+        <div class="node-desc">"Your monthly situation" — Collects income, expenses, and EMIs to calculate affordability.</div>
+        <div class="node-details">
+          <div class="detail-item sky-bg">
+            <span class="detail-icon">💰</span> Monthly income input
+          </div>
+          <div class="detail-item sky-bg">
+            <span class="detail-icon">💳</span> Expenses & EMIs/Rent
+          </div>
+          <div class="detail-item sky-bg">
+            <span class="detail-icon">🔍</span> "Show My Guidance" button
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connector -->
+    <div class="connector-vertical">
+      <div class="connector-line sky"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SCREEN 3: Decision Guidance -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="flow-row">
+      <div class="node glow-mint" style="animation-delay:0.3s; min-width: 440px; max-width: 500px;">
+        <div class="node-number mint">3</div>
+        <div class="node-accent mint"></div>
+        <div class="node-icon mint">✅</div>
+        <div class="node-screen-label">Screen 3 — Core Screen</div>
+        <div class="node-title">Decision Guidance</div>
+        <div class="node-desc">Personalized verdict with affordability analysis, future outlook, behavioral insight, and peer comparison.</div>
+        <div class="node-details">
+          <div class="detail-item mint-bg">
+            <span class="detail-icon">💰</span> Affordability — remaining balance this month
+          </div>
+          <div class="detail-item sky-bg">
+            <span class="detail-icon">🔮</span> Future Outlook — next month stability
+          </div>
+          <div class="detail-item lavender-bg">
+            <span class="detail-icon">🧠</span> Personal Insight — spending behavior
+          </div>
+          <div class="detail-item sand-bg">
+            <span class="detail-icon">👥</span> Peer Insight — social comparison
+          </div>
+          <div class="detail-item mint-bg" style="border: 1px solid rgba(129,199,132,0.3);">
+            <span class="detail-icon">❤️</span> Supportive alignment message
+          </div>
+        </div>
+        <div class="node-actions" style="margin-top: 14px;">
+          <span class="action-pill primary">Go ahead</span>
+          <span class="action-pill secondary">Wait & re-evaluate</span>
+          <span class="action-pill tertiary">Smarter way to buy</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Decision Point -->
+    <div class="connector-vertical">
+      <div class="connector-line" style="height: 30px;"></div>
+    </div>
+
+    <div class="flow-row">
+      <div class="decision-node">
+        <div class="decision-icon">🤔</div>
+        <div class="decision-title">User Decision Point</div>
+        <div class="decision-desc">How does the user want to proceed?</div>
+      </div>
+    </div>
+
+    <!-- Branch SVG -->
+    <div class="branch-connector">
+      <svg class="branch-svg" viewBox="0 0 700 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Center vertical stub -->
+        <line x1="350" y1="0" x2="350" y2="15" stroke="#81C784" stroke-width="2" stroke-dasharray="4 3"/>
+        <!-- Horizontal bar -->
+        <line x1="100" y1="15" x2="600" y2="15" stroke="#81C784" stroke-width="2" stroke-dasharray="4 3"/>
+        <!-- Left branch down -->
+        <line x1="100" y1="15" x2="100" y2="52" stroke="#81C784" stroke-width="2"/>
+        <polygon points="94,52 100,60 106,52" fill="#81C784"/>
+        <!-- Center branch down -->
+        <line x1="350" y1="15" x2="350" y2="52" stroke="#FF8A65" stroke-width="2"/>
+        <polygon points="344,52 350,60 356,52" fill="#FF8A65"/>
+        <!-- Right branch down -->
+        <line x1="600" y1="15" x2="600" y2="52" stroke="#9575CD" stroke-width="2"/>
+        <polygon points="594,52 600,60 606,52" fill="#9575CD"/>
+        <!-- Labels -->
+        <text x="100" y="40" text-anchor="middle" font-family="DM Sans" font-size="10" font-weight="600" fill="#2E7D32">GO AHEAD</text>
+        <text x="350" y="40" text-anchor="middle" font-family="DM Sans" font-size="10" font-weight="600" fill="#BF360C">EXPLORE OPTIONS</text>
+        <text x="600" y="40" text-anchor="middle" font-family="DM Sans" font-size="10" font-weight="600" fill="#4527A0">NEED HELP</text>
+      </svg>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- THREE BRANCHES -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="branch-three">
+
+      <!-- Branch A: Go Ahead → Reflection -->
+      <div class="node glow-mint" style="animation-delay:0.4s; flex: 1;">
+        <div class="node-accent mint"></div>
+        <div class="node-icon mint">🎉</div>
+        <div class="branch-label yes">✓ Confident</div>
+        <div class="node-title">Proceed with Purchase</div>
+        <div class="node-desc">User feels confident and taps "Go ahead" — moves directly to reflection.</div>
+        <div class="node-details">
+          <div class="detail-item mint-bg">
+            <span class="detail-icon">→</span> Skips to Screen 6
+          </div>
+        </div>
+      </div>
+
+      <!-- Branch B: Smarter Options -->
+      <div class="node glow-peach" style="animation-delay:0.5s; flex: 1;">
+        <div class="node-number peach">4</div>
+        <div class="node-accent peach"></div>
+        <div class="node-icon peach">💡</div>
+        <div class="node-screen-label">Screen 4</div>
+        <div class="branch-label no">↻ Re-evaluate</div>
+        <div class="node-title">Smarter Options</div>
+        <div class="node-desc">"Here are better ways to make this work" — alternative approaches to the purchase.</div>
+        <div class="node-details">
+          <div class="detail-item peach-bg">
+            <span class="detail-icon">💡</span> Lower cost alternative
+          </div>
+          <div class="detail-item peach-bg">
+            <span class="detail-icon">⏳</span> Wait 2 months option
+          </div>
+          <div class="detail-item peach-bg">
+            <span class="detail-icon">💳</span> Split payment plan
+          </div>
+        </div>
+      </div>
+
+      <!-- Branch C: Expert Support -->
+      <div class="node glow-lavender" style="animation-delay:0.6s; flex: 1;">
+        <div class="node-number lavender">5</div>
+        <div class="node-accent lavender"></div>
+        <div class="node-icon lavender">💬</div>
+        <div class="node-screen-label">Screen 5</div>
+        <div class="branch-label expert">? Unsure</div>
+        <div class="node-title">Expert Support</div>
+        <div class="node-desc">"Talk to an expert" — chat-based guidance from a financial coach.</div>
+        <div class="node-details">
+          <div class="detail-item lavender-bg">
+            <span class="detail-icon">👨‍💼</span> Chat with Money Coach
+          </div>
+          <div class="detail-item lavender-bg">
+            <span class="detail-icon">💭</span> Personalized Q&A
+          </div>
+          <div class="detail-item lavender-bg">
+            <span class="detail-icon">🤝</span> "Guidance, not judgment"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Merge SVG -->
+    <div class="branch-connector">
+      <svg class="merge-svg" viewBox="0 0 700 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Left branch up -->
+        <line x1="100" y1="0" x2="100" y2="40" stroke="#81C784" stroke-width="2"/>
+        <!-- Center branch up -->
+        <line x1="350" y1="0" x2="350" y2="40" stroke="#FF8A65" stroke-width="2"/>
+        <!-- Right branch up -->
+        <line x1="600" y1="0" x2="600" y2="40" stroke="#9575CD" stroke-width="2"/>
+        <!-- Horizontal bar -->
+        <line x1="100" y1="40" x2="600" y2="40" stroke="#F06292" stroke-width="2" stroke-dasharray="4 3"/>
+        <!-- Center merge down -->
+        <line x1="350" y1="40" x2="350" y2="52" stroke="#F06292" stroke-width="2"/>
+        <polygon points="344,52 350,60 356,52" fill="#F06292"/>
+        <!-- Label -->
+        <text x="350" y="32" text-anchor="middle" font-family="DM Sans" font-size="10" font-weight="600" fill="#AD1457">ALL PATHS CONVERGE</text>
+      </svg>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- SCREEN 6: Reflection -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="flow-row">
+      <div class="node glow-rose" style="animation-delay:0.7s;">
+        <div class="node-number rose">6</div>
+        <div class="node-accent rose"></div>
+        <div class="node-icon rose">🪞</div>
+        <div class="node-screen-label">Screen 6</div>
+        <div class="node-title">Reflection & Learning</div>
+        <div class="node-desc">"How do you feel about this decision?" — captures emotional feedback to improve future guidance.</div>
+        <div class="node-details">
+          <div class="detail-item rose-bg">
+            <span class="detail-icon">😊</span> Feels right
+          </div>
+          <div class="detail-item rose-bg">
+            <span class="detail-icon">😐</span> Still unsure
+          </div>
+          <div class="detail-item rose-bg">
+            <span class="detail-icon">😟</span> Not a good decision
+          </div>
+          <div class="detail-item mint-bg" style="border: 1px solid rgba(129,199,132,0.3); margin-top: 4px;">
+            <span class="detail-icon">📊</span> "3 good decisions this month" — positive reinforcement
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connector -->
+    <div class="connector-vertical">
+      <div class="connector-line rose" style="height: 40px;"></div>
+    </div>
+
+    <!-- Learning Loop -->
+    <div class="flow-row">
+      <div class="decision-node" style="border-color: rgba(240,98,146,0.3);">
+        <div class="decision-icon">🔄</div>
+        <div class="decision-title">Learning Loop</div>
+        <div class="decision-desc">Feedback refines future guidance — the system learns the user's comfort patterns over time.</div>
+      </div>
+    </div>
+
+  </div><!-- /flow-container -->
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-dot mint"></div> Intent & Guidance
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot sky"></div> Financial Data
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot peach"></div> Alternatives
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot lavender"></div> Expert Support
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot rose"></div> Reflection
+    </div>
+    <div class="legend-item">
+      <div class="legend-dashed"></div> Decision Point
+    </div>
+  </div>
+
+</div><!-- /page-wrapper -->
+
+</body>
+</html>
