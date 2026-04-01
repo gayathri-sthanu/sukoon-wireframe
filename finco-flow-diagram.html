@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinCo — User Journey Flow</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage: #D4E4D2;
+    --sage-deep: #8FB58A;
+    --sage-light: #EEF4ED;
+    --blush: #F5D5CB;
+    --blush-deep: #E8A998;
+    --blush-light: #FDF0EC;
+    --lilac: #D8CDE8;
+    --lilac-deep: #A68FC4;
+    --lilac-light: #F0EBF6;
+    --sky: #C4DFF0;
+    --sky-deep: #7FBAD8;
+    --sky-light: #E8F2FA;
+    --butter: #F5E8C8;
+    --butter-deep: #D9C08A;
+    --butter-light: #FDF7EC;
+    --coral: #F0C4B8;
+    --coral-deep: #D4887A;
+    --coral-light: #FBF0ED;
+    --warm-white: #FDFCFA;
+    --charcoal: #2C3E3A;
+    --charcoal-mid: #5A6E68;
+    --charcoal-light: #8A9E98;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--warm-white);
+    color: var(--charcoal);
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 15% 10%, rgba(212,228,210,0.3) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 25%, rgba(245,213,203,0.25) 0%, transparent 45%),
+      radial-gradient(ellipse at 50% 55%, rgba(216,205,232,0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 20% 80%, rgba(196,223,240,0.2) 0%, transparent 45%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 56px 28px 120px; }
+
+  /* ── Header ── */
+  .header { text-align: center; margin-bottom: 64px; animation: fadeDown .7s ease-out; }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--sage-light); border: 1px solid var(--sage);
+    padding: 7px 18px; border-radius: 50px;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--sage-deep); margin-bottom: 20px;
+  }
+  .badge::before { content: '✦'; font-size: 9px; }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 52px); font-weight: 700;
+    line-height: 1.15; margin-bottom: 14px;
+  }
+  .header h1 em { font-style: italic; color: var(--sage-deep); }
+  .header p { font-size: 16px; color: var(--charcoal-light); max-width: 480px; margin: 0 auto; line-height: 1.6; font-weight: 300; }
+
+  /* ── Screen Node ── */
+  .node {
+    background: #fff;
+    border-radius: 18px;
+    padding: 28px 26px;
+    border: 1px solid rgba(0,0,0,0.04);
+    box-shadow: 0 2px 14px rgba(0,0,0,0.03);
+    position: relative;
+    transition: box-shadow .3s ease, transform .3s ease;
+  }
+  .node:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.065); transform: translateY(-2px); }
+
+  .node-icon {
+    width: 42px; height: 42px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 19px; margin-bottom: 14px;
+  }
+
+  .node h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; line-height: 1.35; }
+  .node p  { font-size: 13px; color: var(--charcoal-mid); line-height: 1.55; font-weight: 300; }
+
+  .node .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+  .tag { padding: 5px 12px; border-radius: 8px; font-size: 11px; font-weight: 500; }
+
+  .node .steps { list-style: none; margin-top: 12px; }
+  .node .steps li { display: flex; align-items: flex-start; gap: 8px; padding: 4px 0; font-size: 12.5px; color: var(--charcoal-mid); line-height: 1.45; }
+  .node .steps li .d { width: 5px; height: 5px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+
+  /* ── Accent bars ── */
+  .accent-sage   { border-top: 3px solid var(--sage-deep); }
+  .accent-blush  { border-top: 3px solid var(--blush-deep); }
+  .accent-lilac  { border-top: 3px solid var(--lilac-deep); }
+  .accent-sky    { border-top: 3px solid var(--sky-deep); }
+  .accent-butter { border-top: 3px solid var(--butter-deep); }
+  .accent-coral  { border-top: 3px solid var(--coral-deep); }
+
+  /* ── Color helpers ── */
+  .bg-sage   .node-icon { background: var(--sage-light); }
+  .bg-sage   .tag       { background: var(--sage-light); color: var(--sage-deep); }
+  .bg-sage   .d         { background: var(--sage-deep); }
+
+  .bg-blush  .node-icon { background: var(--blush-light); }
+  .bg-blush  .tag       { background: var(--blush-light); color: var(--blush-deep); }
+  .bg-blush  .d         { background: var(--blush-deep); }
+
+  .bg-lilac  .node-icon { background: var(--lilac-light); }
+  .bg-lilac  .tag       { background: var(--lilac-light); color: var(--lilac-deep); }
+  .bg-lilac  .d         { background: var(--lilac-deep); }
+
+  .bg-sky    .node-icon { background: var(--sky-light); }
+  .bg-sky    .tag       { background: var(--sky-light); color: var(--sky-deep); }
+  .bg-sky    .d         { background: var(--sky-deep); }
+
+  .bg-butter .node-icon { background: var(--butter-light); }
+  .bg-butter .tag       { background: var(--butter-light); color: var(--butter-deep); }
+  .bg-butter .d         { background: var(--butter-deep); }
+
+  .bg-coral  .node-icon { background: var(--coral-light); }
+  .bg-coral  .tag       { background: var(--coral-light); color: var(--coral-deep); }
+  .bg-coral  .d         { background: var(--coral-deep); }
+
+  /* ── Arrow connectors ── */
+  .arrow {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 6px 0; position: relative;
+  }
+  .arrow .shaft {
+    width: 2px; height: 44px;
+    background: linear-gradient(to bottom, var(--sage), rgba(184,200,182,0.35));
+    border-radius: 2px;
+  }
+  .arrow .head {
+    width: 0; height: 0;
+    border-left: 6px solid transparent; border-right: 6px solid transparent;
+    border-top: 8px solid var(--sage-deep);
+    margin-top: -1px;
+  }
+  .arrow .label {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    font-size: 11px; font-weight: 600; letter-spacing: 0.4px;
+    color: var(--charcoal-light); white-space: nowrap;
+    background: var(--warm-white); padding: 2px 10px; border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .arrow .label.right { left: calc(50% + 16px); }
+  .arrow .label.left  { right: calc(50% + 16px); }
+
+  .arrow.short .shaft { height: 30px; }
+  .arrow.tall  .shaft { height: 56px; }
+
+  /* Colored arrows */
+  .arrow.blush .shaft { background: linear-gradient(to bottom, var(--blush), rgba(245,213,203,0.35)); }
+  .arrow.blush .head  { border-top-color: var(--blush-deep); }
+  .arrow.lilac .shaft { background: linear-gradient(to bottom, var(--lilac), rgba(216,205,232,0.35)); }
+  .arrow.lilac .head  { border-top-color: var(--lilac-deep); }
+  .arrow.sky   .shaft { background: linear-gradient(to bottom, var(--sky), rgba(196,223,240,0.35)); }
+  .arrow.sky   .head  { border-top-color: var(--sky-deep); }
+  .arrow.butter .shaft { background: linear-gradient(to bottom, var(--butter), rgba(245,232,200,0.35)); }
+  .arrow.butter .head  { border-top-color: var(--butter-deep); }
+  .arrow.coral .shaft { background: linear-gradient(to bottom, var(--coral), rgba(240,196,184,0.35)); }
+  .arrow.coral .head  { border-top-color: var(--coral-deep); }
+
+  /* ── Phase label ── */
+  .phase-bar {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 18px; padding-left: 2px;
+  }
+  .phase-num {
+    width: 34px; height: 34px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; color: #fff; flex-shrink: 0;
+  }
+  .phase-bar .title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; }
+  .phase-bar .sub   { font-size: 12px; color: var(--charcoal-light); margin-top: 1px; }
+
+  /* ── Decision diamond ── */
+  .diamond-wrap { display: flex; justify-content: center; padding: 4px 0; }
+  .diamond {
+    background: #fff; border: 2px solid var(--butter);
+    border-radius: 16px; padding: 18px 36px; text-align: center;
+    box-shadow: 0 3px 18px rgba(0,0,0,0.04); position: relative;
+  }
+  .diamond::before {
+    content: '◇'; position: absolute; top: -14px; left: 50%;
+    transform: translateX(-50%); background: var(--warm-white);
+    padding: 0 8px; color: var(--butter-deep); font-size: 15px;
+  }
+  .diamond h3 { font-size: 15px; font-weight: 600; }
+  .diamond p  { font-size: 12px; color: var(--charcoal-light); margin-top: 3px; }
+
+  /* ── Branch grid ── */
+  .branches-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+  .branches-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+
+  .branch-tag {
+    display: inline-block; padding: 6px 16px; border-radius: 10px;
+    font-size: 12px; font-weight: 600; margin-bottom: 12px;
+  }
+  .bt-green  { background: var(--sage-light);   color: var(--sage-deep);   border: 1px solid var(--sage); }
+  .bt-orange { background: var(--butter-light); color: var(--butter-deep); border: 1px solid var(--butter); }
+  .bt-red    { background: var(--blush-light);  color: var(--blush-deep);  border: 1px solid var(--blush); }
+  .bt-blue   { background: var(--sky-light);    color: var(--sky-deep);    border: 1px solid var(--sky); }
+  .bt-coral  { background: var(--coral-light);  color: var(--coral-deep);  border: 1px solid var(--coral); }
+
+  /* ── CTA pill inside cards ── */
+  .cta {
+    display: inline-block; margin-top: 14px; padding: 8px 18px;
+    border-radius: 10px; font-size: 12px; font-weight: 600;
+  }
+  .cta-sage   { background: var(--sage);  color: #3a5a37; }
+  .cta-blush  { background: var(--blush); color: #7a4a3a; }
+  .cta-lilac  { background: var(--lilac); color: #5a4570; }
+  .cta-sky    { background: var(--sky);   color: #2a5a7a; }
+  .cta-butter { background: var(--butter);color: #6a5a30; }
+  .cta-coral  { background: var(--coral); color: #6a3a30; }
+
+  /* ── Side-arrow (horizontal / curved return) ── */
+  .side-arrow-row {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0; margin: 12px 0; position: relative;
+  }
+  .side-arrow-row .h-line {
+    height: 2px; flex: 1; max-width: 120px;
+    border-radius: 2px;
+  }
+  .side-arrow-row .h-head {
+    width: 0; height: 0;
+    border-top: 5px solid transparent; border-bottom: 5px solid transparent;
+  }
+
+  /* ── Merge pill ── */
+  .merge { display: flex; justify-content: center; padding: 10px 0; }
+  .merge-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: linear-gradient(135deg, var(--sage-light), var(--sky-light));
+    border: 1px solid rgba(0,0,0,0.06); border-radius: 50px;
+    padding: 12px 26px; font-size: 14px; font-weight: 600;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.025);
+  }
+
+  /* ── Result sub-cards ── */
+  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .mini-card {
+    background: #fff; border-radius: 14px; padding: 18px 16px;
+    border: 1px solid rgba(0,0,0,0.04); box-shadow: 0 1px 8px rgba(0,0,0,0.02);
+  }
+  .mini-card h4 { font-size: 13.5px; font-weight: 600; margin-bottom: 5px; }
+  .mini-card p  { font-size: 12px; color: var(--charcoal-mid); line-height: 1.5; }
+
+  .report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 10px; }
+  .report-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 500; color: var(--charcoal-mid);
+    padding: 4px 8px; border-radius: 8px; background: rgba(0,0,0,0.015);
+  }
+  .report-item .ck { color: var(--sage-deep); font-size: 13px; }
+
+  /* ── Return arrow (curved, for "back to screen 1") ── */
+  .return-arrow {
+    position: relative; display: flex; justify-content: center;
+    padding: 14px 0 6px; margin-top: 4px;
+  }
+  .return-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11.5px; font-weight: 600; color: var(--charcoal-light);
+    background: var(--warm-white); padding: 6px 18px; border-radius: 20px;
+    border: 1.5px dashed; position: relative;
+  }
+  .return-pill.sage-b   { border-color: var(--sage); }
+  .return-pill.blush-b  { border-color: var(--blush); }
+  .return-pill.coral-b  { border-color: var(--coral); }
+  .return-pill.butter-b { border-color: var(--butter); }
+
+  .return-pill::before {
+    content: '↺'; font-size: 14px; margin-right: 2px;
+  }
+
+  /* ── Feedback outcome mini ── */
+  .outcome {
+    text-align: center; padding: 16px 14px; border-radius: 14px; margin-top: 10px;
+  }
+  .outcome .check { font-size: 18px; margin-bottom: 6px; display: block; }
+  .outcome .msg   { font-size: 12.5px; font-weight: 600; }
+  .outcome .sub   { font-size: 11px; color: var(--charcoal-mid); margin-top: 4px; }
+  .outcome .habit  { font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700; margin-top: 8px; color: var(--charcoal-light); }
+
+  /* ── Navigation target labels ── */
+  .nav-target {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 600; margin-top: 10px;
+    padding: 5px 12px; border-radius: 8px;
+  }
+  .nav-target::before { content: '→'; font-size: 13px; }
+
+  .nav-sage   { background: var(--sage-light);   color: var(--sage-deep); }
+  .nav-blush  { background: var(--blush-light);  color: var(--blush-deep); }
+  .nav-coral  { background: var(--coral-light);  color: var(--coral-deep); }
+  .nav-butter { background: var(--butter-light); color: var(--butter-deep); }
+
+  /* ── SVG overlay for curved arrows ── */
+  .svg-arrows {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 2;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-18px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeUp   { from { opacity:0; transform:translateY(20px); }  to { opacity:1; transform:translateY(0); } }
+
+  .fade { animation: fadeUp .65s ease-out both; }
+  .fade:nth-child(2)  { animation-delay:.05s; }
+  .fade:nth-child(3)  { animation-delay:.1s; }
+  .fade:nth-child(4)  { animation-delay:.15s; }
+  .fade:nth-child(5)  { animation-delay:.2s; }
+  .fade:nth-child(6)  { animation-delay:.25s; }
+  .fade:nth-child(7)  { animation-delay:.3s; }
+  .fade:nth-child(8)  { animation-delay:.35s; }
+  .fade:nth-child(9)  { animation-delay:.4s; }
+  .fade:nth-child(10) { animation-delay:.45s; }
+  .fade:nth-child(11) { animation-delay:.5s; }
+  .fade:nth-child(12) { animation-delay:.55s; }
+  .fade:nth-child(13) { animation-delay:.6s; }
+  .fade:nth-child(14) { animation-delay:.65s; }
+  .fade:nth-child(15) { animation-delay:.7s; }
+  .fade:nth-child(16) { animation-delay:.75s; }
+  .fade:nth-child(17) { animation-delay:.8s; }
+  .fade:nth-child(18) { animation-delay:.85s; }
+  .fade:nth-child(19) { animation-delay:.9s; }
+  .fade:nth-child(20) { animation-delay:.95s; }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .page { padding: 36px 14px 80px; }
+    .branches-3, .branches-2, .result-grid { grid-template-columns: 1fr; }
+    .header h1 { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ══════ HEADER ══════ -->
+  <header class="header">
+    <div class="badge">FinCo App</div>
+    <h1>User <em>Journey</em> Flow</h1>
+    <p>Complete screen-by-screen decision guidance experience with navigation paths</p>
+  </header>
+
+
+  <!-- ═══════════════════════════════════════
+       SCREEN 1 — PURCHASE INTENT
+       ═══════════════════════════════════════ -->
+  <section class="fade" id="screen1">
+    <div class="phase-bar">
+      <div class="phase-num" style="background:var(--sage-deep)">1</div>
+      <div><div class="title">Purchase Intent</div><div class="sub">User enters what they want to buy</div></div>
+    </div>
+    <div class="node accent-sage bg-sage">
+      <div class="node-icon">🛒</div>
+      <h3>"What are you planning?"</h3>
+      <p>User describes the planned purchase and selects their current financial mindset.</p>
+      <div class="tags">
+        <span class="tag">Item Name</span>
+        <span class="tag">Category</span>
+        <span class="tag">Estimated Cost (₹)</span>
+      </div>
+      <ul class="steps" style="margin-top:14px">
+        <li><span class="d"></span>Priority: <strong>Stay Comfortable</strong> · <strong>Be Flexible</strong> · <strong>Think Ahead</strong></li>
+      </ul>
+      <span class="cta cta-sage">Continue →</span>
+    </div>
+  </section>
+
+  <div class="arrow fade"><div class="shaft"></div><div class="head"></div></div>
+
+  <!-- ═══════════════════════════════════════
+       SCREEN 2 — FINANCIAL SNAPSHOT
+       ═══════════════════════════════════════ -->
+  <section class="fade" id="screen2">
+    <div class="phase-bar">
+      <div class="phase-num" style="background:var(--blush-deep)">2</div>
+      <div><div class="title">Financial Snapshot</div><div class="sub">Monthly situation for personalized analysis</div></div>
+    </div>
+    <div class="node accent-blush bg-blush">
+      <div class="node-icon">💰</div>
+      <h3>"Your monthly situation"</h3>
+      <p>Financial context to personalize guidance. Data stays private and secure.</p>
+      <div class="tags">
+        <span class="tag">Monthly Income</span>
+        <span class="tag">Monthly Expenses</span>
+        <span class="tag">EMIs / Rent</span>
+        <span class="tag">Location</span>
+      </div>
+      <span class="cta cta-blush">Simulate →</span>
+    </div>
+  </section>
+
+  <div class="arrow blush fade"><div class="shaft"></div><div class="head"></div></div>
+
+  <!-- ═══════════════════════════════════════
+       SCREEN 3 — AI ANALYSIS LOADING
+       ═══════════════════════════════════════ -->
+  <section class="fade" id="screen3">
+    <div class="phase-bar">
+      <div class="phase-num" style="background:var(--lilac-deep)">3</div>
+      <div><div class="title">AI Analysis</div><div class="sub">FinWise Intelligence processes your data</div></div>
+    </div>
+    <div class="node accent-lilac bg-lilac">
+      <div class="node-icon">🧠</div>
+      <h3>"Building your expert guidance..."</h3>
+      <p>Animated loading with real-time progress on each analysis step.</p>
+      <ul class="steps">
+        <li><span class="d"></span>Reviewing monthly income</li>
+        <li><span class="d"></span>Checking expense balance</li>
+        <li><span class="d"></span>Analyzing debt impact on freedom</li>
+        <li><span class="d"></span>Simulating purchase impact on safety net</li>
+        <li><span class="d"></span>Exploring alternative uses for the money</li>
+        <li><span class="d"></span>Location &amp; lifestyle factors</li>
+        <li><span class="d"></span>Peer comparison analysis</li>
+        <li><span class="d"></span>Finalizing personalized guidance</li>
+      </ul>
+      <span class="cta cta-lilac">View My Guidance →</span>
+    </div>
+  </section>
+
+  <div class="arrow lilac fade"><div class="shaft"></div><div class="head"></div></div>
+
+  <!-- ═══════════════════════════════════════
+       SCREEN 4 — GUIDANCE RESULTS
+       ═══════════════════════════════════════ -->
+  <section class="fade" id="screen4">
+    <div class="phase-bar">
+      <div class="phase-num" style="background:var(--sky-deep)">4</div>
+      <div><div class="title">Guidance Results</div><div class="sub">Personalized financial assessment</div></div>
+    </div>
+    <div class="node accent-sky bg-sky" style="padding-bottom:20px;">
+      <div class="node-icon">📋</div>
+      <h3>Comprehensive Decision Report</h3>
+      <p style="margin-bottom:16px;">Full financial assessment with expert insights and peer benchmarks.</p>
+
+      <div class="result-grid">
+        <div class="mini-card" style="border-left:3px solid var(--sage-deep);">
+          <h4>🟢 Overall Assessment</h4>
+          <p>Financial position summary — whether the purchase fits comfortably.</p>
+        </div>
+        <div class="mini-card" style="border-left:3px solid var(--butter-deep);">
+          <h4>⚖️ Opportunity Cost</h4>
+          <p>What this money could do instead — investments, savings, other goals.</p>
+        </div>
+        <div class="mini-card" style="border-left:3px solid var(--sky-deep);">
+          <h4>📈 Future Pressure</h4>
+          <p>Whether the purchase adds stress to future budgets or goals.</p>
+        </div>
+        <div class="mini-card" style="border-left:3px solid var(--lilac-deep);">
+          <h4>👥 Peer Comparison</h4>
+          <p>How this spending compares to similar profiles in your area.</p>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px;">
+        <div class="mini-card" style="border-top:2px solid var(--sky-deep);">
+          <h4>🎯 Advisor Confidence: HIGH</h4>
+          <p>Based on surplus, costs, and risk analysis.</p>
+        </div>
+        <div class="mini-card" style="border-top:2px solid var(--butter-deep);">
+          <h4>📊 FinWise Intelligence Report</h4>
+          <div class="report-grid">
+            <div class="report-item"><span class="ck">✓</span> Spending Balance</div>
+            <div class="report-item"><span class="ck">✓</span> Commitment Ratio</div>
+            <div class="report-item"><span class="ck">✓</span> Safety Buffer</div>
+            <div class="report-item"><span class="ck">✓</span> Lifestyle Alignment</div>
+            <div class="report-item"><span class="ck">✓</span> Purchasing Power</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="background:linear-gradient(135deg,#fdfcfa,var(--sage-light)); border:1px dashed var(--sage); border-radius:12px; padding:14px 16px; margin-top:14px;">
+        <p style="font-style:italic; font-size:12.5px; color:var(--charcoal-mid); line-height:1.55;">"You've managed your finances well, and your numbers show you can afford this comfortably. Enjoy the upgrade!"</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="arrow sky fade"><div class="shaft"></div><div class="head"></div></div>
+
+  <!-- ═══════════════════════════════════════
+       DECISION POINT
+       ═══════════════════════════════════════ -->
+  <div class="diamond-wrap fade">
+    <div class="diamond">
+      <h3>User chooses next step</h3>
+      <p>Three possible navigation paths</p>
+    </div>
+  </div>
+
+  <div class="arrow butter fade short"><div class="shaft"></div><div class="head"></div></div>
+
+  <!-- ═══════════════════════════════════════
+       THREE PATHS FROM GUIDANCE
+       ═══════════════════════════════════════ -->
+  <div class="fade">
+    <div class="branches-3">
+
+      <!-- ── PATH A: Find Smarter Way ── -->
+      <div style="text-align:center;">
+        <span class="branch-tag bt-green">Path A — Optimize</span>
+        <div class="node accent-sage bg-sage" style="text-align:left;">
+          <div class="node-icon">💡</div>
+          <h3>"Find a smarter way to buy this"</h3>
+          <p>Curated strategies to optimize the purchase.</p>
+          <ul class="steps">
+            <li><span class="d"></span><strong>Cash-Is-King</strong> — Buy outright</li>
+            <li><span class="d"></span><strong>Sale Strategy</strong> — Wait for 10-15% off</li>
+            <li><span class="d"></span><strong>Smart Exchange</strong> — Trade-in credit</li>
+            <li><span class="d"></span><strong>Short-Term Split</strong> — No-cost EMI</li>
+          </ul>
+          <span class="cta cta-sage">Got it, thanks</span>
+          <div class="nav-target nav-sage">Goes to Reflection</div>
+        </div>
+      </div>
+
+      <!-- ── PATH B: Wait & Re-evaluate ── -->
+      <div style="text-align:center;">
+        <span class="branch-tag bt-orange">Path B — Pause</span>
+        <div class="node accent-butter bg-butter" style="text-align:left;">
+          <div class="node-icon">⏸️</div>
+          <h3>"Wait &amp; re-evaluate"</h3>
+          <p>User decides to hold off and revisit later.</p>
+          <ul class="steps">
+            <li><span class="d"></span>Saves plan for future</li>
+            <li><span class="d"></span>Can re-simulate anytime</li>
+          </ul>
+          <span class="cta cta-butter">Maybe later</span>
+          <div class="nav-target nav-butter">Returns to Screen 1</div>
+        </div>
+      </div>
+
+      <!-- ── PATH C: Talk to Expert ── -->
+      <div style="text-align:center;">
+        <span class="branch-tag bt-coral">Path C — Consult</span>
+        <div class="node accent-coral bg-coral" style="text-align:left;">
+          <div class="node-icon">🧑‍💼</div>
+          <h3>"Still unsure? Talk to an expert"</h3>
+          <p>Book a session with a Financial Guide who understands your situation.</p>
+          <ul class="steps">
+            <li><span class="d"></span>Pick a time slot</li>
+            <li><span class="d"></span>Add optional notes</li>
+          </ul>
+          <span class="cta cta-coral">Talk to an expert</span>
+          <div class="nav-target nav-coral">Goes to Expert Screen</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       ARROW ROUTING — visual path indicators
+       ═══════════════════════════════════════ -->
+
+  <!-- Path A arrow down to Reflection -->
+  <div class="fade" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px;">
+    <div class="arrow" style="margin:0 auto;"><div class="shaft" style="height:36px;"></div><div class="head"></div></div>
+    <div style="display:flex;align-items:center;justify-content:center;">
+      <div class="return-pill butter-b">Back to Screen 1</div>
+    </div>
+    <div class="arrow coral" style="margin:0 auto;"><div class="shaft" style="height:36px;"></div><div class="head"></div></div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       PATH A DESTINATION — SCREEN 5: REFLECTION
+       ═══════════════════════════════════════ -->
+  <div class="fade" style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:18px;">
+
+    <!-- Col 1: Reflection -->
+    <section id="screen5">
+      <div class="phase-bar">
+        <div class="phase-num" style="background:var(--sage-deep); width:30px; height:30px; font-size:11px;">5</div>
+        <div><div class="title" style="font-size:17px;">Reflection</div></div>
+      </div>
+      <div class="node accent-sage bg-sage">
+        <div class="node-icon">🪞</div>
+        <h3>"How do you feel about this decision?"</h3>
+        <p>Emotional check-in to improve future guidance.</p>
+        <div class="tags" style="margin-top:14px;">
+          <span class="tag">😊 Feels Right</span>
+          <span class="tag">😐 Still Unsure</span>
+          <span class="tag">😟 Not Good</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Col 2: Empty (Path B goes back) -->
+    <div></div>
+
+    <!-- Col 3: Expert Consultation -->
+    <section id="screen6">
+      <div class="phase-bar">
+        <div class="phase-num" style="background:var(--coral-deep); width:30px; height:30px; font-size:11px;">6</div>
+        <div><div class="title" style="font-size:17px;">Expert Call</div></div>
+      </div>
+      <div class="node accent-coral bg-coral">
+        <div class="node-icon">📞</div>
+        <h3>"Talk to an expert"</h3>
+        <p>Book a Financial Guide session.</p>
+        <div class="tags">
+          <span class="tag">Today 6:00 PM</span>
+          <span class="tag">Tomorrow 11 AM</span>
+          <span class="tag">Tomorrow 7:30 PM</span>
+          <span class="tag">Weekend</span>
+        </div>
+        <span class="cta cta-coral">Book Session</span>
+      </div>
+    </section>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       REFLECTION BRANCHES + EXPERT CONFIRMATION
+       ═══════════════════════════════════════ -->
+  <div class="fade" style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:18px; margin-top:4px;">
+    <div class="arrow" style="margin:0 auto;"><div class="shaft" style="height:28px;"></div><div class="head"></div></div>
+    <div></div>
+    <div class="arrow coral" style="margin:0 auto;"><div class="shaft" style="height:28px;"></div><div class="head"></div></div>
+  </div>
+
+  <div class="fade" style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:18px;">
+
+    <!-- Reflection outcomes -->
+    <div>
+      <div class="branches-3" style="grid-template-columns:1fr;">
+        <!-- Feels Right -->
+        <div class="outcome" style="background:var(--sage-light);">
+          <span class="check">✅</span>
+          <span class="msg" style="color:var(--sage-deep);">Feedback Saved!</span>
+          <div class="sub">"4 good decisions this month"</div>
+          <div class="habit">Habit Building in Progress</div>
+        </div>
+        <!-- Still Unsure -->
+        <div class="outcome" style="background:var(--butter-light); margin-top:8px;">
+          <span class="check">💬</span>
+          <span class="msg" style="color:var(--butter-deep);">We appreciate the honesty</span>
+          <div class="sub">Feedback saved. Option to <strong>Talk to expert</strong></div>
+          <div class="nav-target nav-coral" style="margin: 8px auto 0;">Goes to Expert Screen</div>
+        </div>
+        <!-- Not good -->
+        <div class="outcome" style="background:var(--blush-light); margin-top:8px;">
+          <span class="check">🔄</span>
+          <span class="msg" style="color:var(--blush-deep);">Feedback saved</span>
+          <div class="sub">Option to <strong>Talk to expert</strong> or restart</div>
+          <div class="nav-target nav-coral" style="margin: 8px auto 0;">Goes to Expert Screen</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spacer -->
+    <div></div>
+
+    <!-- Expert confirmation -->
+    <div>
+      <div class="node" style="background:linear-gradient(135deg, var(--sage-light), var(--sky-light)); text-align:center; border:1px solid var(--sage);">
+        <div style="width:50px;height:50px;border-radius:50%;background:var(--sage);display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 14px;border:2px solid var(--sage-deep);">✓</div>
+        <h3 style="font-size:16px;">Session Booked!</h3>
+        <p style="margin-top:6px;">Confirmation sent via email.</p>
+        <span class="cta cta-sage" style="margin-top:14px;">Continue to Reflection →</span>
+        <div class="nav-target nav-sage" style="margin-top:8px;">Goes to Reflection</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════
+       FINAL MERGE — START NEW PLAN
+       ═══════════════════════════════════════ -->
+  <div class="arrow fade tall"><div class="shaft"></div><div class="head"></div></div>
+
+  <div class="merge fade">
+    <div class="merge-pill">
+      🔄 &nbsp;Start New Plan — Returns to Screen 1
+    </div>
+  </div>
+
+  <div class="return-arrow fade">
+    <div class="return-pill sage-b">User can restart the journey anytime with a new purchase decision</div>
+  </div>
+
+</div>
+
+</body>
+</html>
